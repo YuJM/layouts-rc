@@ -12,10 +12,10 @@ const code = `<Row className={'stack-panel p-10'} gap={12} justify="center">
 </Row>`;
 export function RowSection() {
   return (
-    <section className="h-screen">
+    <section className="md:h-screen">
       <h2 className="section-title">Row</h2>
       <LiveProvider code={code} scope={scope}>
-        <div className="grid grid-cols-2 gap-4 items-start">
+        <div className="section-content">
           <CustomLiveEditor />
           <LivePreview />
         </div>

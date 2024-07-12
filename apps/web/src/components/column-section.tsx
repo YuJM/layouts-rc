@@ -12,10 +12,10 @@ const code = `<Column className={'stack-panel p-10'} gap={12} items="center">
     </Column>`;
 export function ColumnSection() {
   return (
-    <section className="h-screen">
+    <section className="md:h-screen">
       <h2 className="section-title">Column</h2>
       <LiveProvider code={code} scope={scope}>
-        <div className="grid grid-cols-2 gap-4 items-start">
+        <div className="section-content">
           <CustomLiveEditor />
           <LivePreview />
         </div>

@@ -31,12 +31,12 @@ const code = `<Scaffold className="h-[600px] w-[400px] text-2xl font-semibold">
 
 export function ScaffoldSection() {
   return (
-    <section className="h-screen">
+    <section className="md:h-screen">
       <h2 className="section-title">Scaffold</h2>
       <LiveProvider code={code} scope={scope}>
-        <div className="flex flex-col items-center gap-4">
-          <LivePreview />
+        <div className="section-content">
           <CustomLiveEditor />
+          <LivePreview />
         </div>
         <LiveError />
       </LiveProvider>

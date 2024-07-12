@@ -11,10 +11,10 @@ const code = `<Center className={'stack-panel p-20'}>
 
 export function CenterSection() {
   return (
-    <section className="h-screen">
+    <section className="md:h-screen">
       <h2 className="section-title">Center</h2>
       <LiveProvider code={code} scope={scope}>
-        <div className="grid grid-cols-2 gap-4 items-start">
+        <div className="section-content">
           <CustomLiveEditor />
           <LivePreview />
         </div>
