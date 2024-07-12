@@ -1,7 +1,9 @@
 # Layouts-rc
 Component library for React layouts.
 ## install
-```npm install layouts-rc```
+```shell
+$ npm install layouts-rc
+```
 ## style apply
 
 ```typescript jsx
