@@ -1,6 +1,6 @@
 {
   "name": "layouts-rc",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Component library for React layouts.",
   "keywords": [
     "react",
@@ -8,10 +8,10 @@
     "layout",
     "scaffold",
     "flex",
-    "library"
+    "front-end"
   ],
   "homepage": "https://layouts-rc-web.vercel.app",
-  "repository": "https://github.com/YuJM/layouts-rc",
+  "repository": "https://github.com/YuJM/layouts-rc/tree/main/packages/layouts#readme",
   "license": "MIT",
   "author": "Yujm",
   "sideEffects": [

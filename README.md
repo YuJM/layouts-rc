@@ -1,22 +1,3 @@
-# Layouts-rc
-Component library for React layouts.
-## install
-```npm install layouts-rc```
-## style apply
+# Layouts-rc-repo
 
-```typescript jsx
-// import './globals.css';
-import 'layouts-rc/styles.css';
-```
-## usage
-```typescript jsx
-import {
-    Scaffold,
-    ScaffoldBody,
-    ScaffoldFooter,
-    ScaffoldHeader,
-    Row,
-    Column,
-    Center
-} from 'layouts-rc';
-```
+## layout-rc [(doc)](packages/layouts/README.md)

@@ -31,6 +31,6 @@ body {
     @apply text-center text-3xl font-semibold mb-10;
   }
   .stack-panel {
-    @apply bg-white rounded-md;
+    @apply bg-white rounded-md transform hover:drop-shadow-lg transition-all;
   }
 }
