@@ -1,44 +1,48 @@
 {
-  "name": "layouts-rc",
-  "description": "Component library for React layouts.",
-  "author": "Yujm",
-  "version": "0.1.0",
-  "sideEffects": [
-    "**/*.css"
-  ],
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./styles.css": "./dist/index.css"
-  },
-  "license": "MIT",
-  "scripts": {
-    "build": "tsup",
-    "lint": "eslint src/",
-    "dev": "tsup --watch",
-    "type-check": "tsc --noEmit"
-  },
-  "peerDependencies": {
-    "react": "^18.2.0"
-  },
-  "dependencies": {
-    "@radix-ui/react-slot": "^1.1.0",
-    "clsx": "^2.1.1"
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "^20.11.24",
-    "@types/react": "^18.2.61",
-    "autoprefixer": "^10.4.18",
-    "postcss": "^8.4.35",
-    "tsup": "^8.1.0",
-    "typescript": "^5.3.3"
-  }
+	"name": "layouts-rc",
+	"version": "0.2.0",
+	"description": "Component library for React layouts.",
+	"license": "MIT",
+	"author": "Yujm",
+	"sideEffects": [
+		"**/*.css"
+	],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js"
+		},
+		"./styles.css": "./dist/index.css"
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"lint": "eslint src/",
+		"type-check": "tsc --noEmit"
+	},
+	"prettier": "@vercel/style-guide/prettier",
+	"dependencies": {
+		"@radix-ui/react-slot": "^1.1.0",
+		"clsx": "^2.1.1"
+	},
+	"devDependencies": {
+		"@repo/eslint-config": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "^20.11.24",
+		"@types/react": "^18.2.61",
+		"@vercel/style-guide": "^6.0.0",
+		"autoprefixer": "^10.4.18",
+		"esbuild-sass-plugin": "^3.3.1",
+		"postcss": "^8.4.35",
+		"sass": "^1.77.8",
+		"tsup": "^8.1.0",
+		"typescript": "^5.3.3"
+	},
+	"peerDependencies": {
+		"react": "^18.2.0"
+	}
 }
