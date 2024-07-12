@@ -25,3 +25,9 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@layer components {
+  .section-title {
+    @apply text-center text-4xl font-bold mb-16;
+  }
+}
