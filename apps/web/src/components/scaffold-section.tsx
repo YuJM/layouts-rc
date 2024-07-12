@@ -6,8 +6,8 @@ import {
   ScaffoldHeader,
 } from 'layouts-rc';
 
-export const ScaffoldSection = () => (
-  <section className={'h-screen'}>
+export function ScaffoldSection() {
+  return <section className="h-screen">
     <h2 className="section-title">Scaffold</h2>
     <Scaffold className="h-[600px] w-[400px] text-2xl font-semibold">
       <ScaffoldHeader className="border-4 border-white px-4 py-2">
@@ -29,4 +29,4 @@ export const ScaffoldSection = () => (
       </ScaffoldFooter>
     </Scaffold>
   </section>
-);
+}

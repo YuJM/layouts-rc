@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
-import { createElement, CSSProperties, forwardRef } from 'react';
+import type { CSSProperties} from 'react';
+import { createElement, forwardRef } from 'react';
 import type { CommonProps } from './slot-base-comp.tsx';
 import { SlotBaseComp } from './slot-base-comp.tsx';
 import { PREFIX } from './common.ts';
