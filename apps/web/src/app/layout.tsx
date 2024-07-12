@@ -1,13 +1,13 @@
-import "./globals.css";
-import "layouts-rc/styles.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import './globals.css';
+import 'layouts-rc/styles.css';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Layouts-rc",
-  description: "",
+  title: 'Layouts-rc',
+  description: 'Layouts-rc demo site',
 };
 
 export default function RootLayout({
