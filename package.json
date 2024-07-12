@@ -2,6 +2,8 @@
   "name": "layouts-rc-repo",
   "private": true,
   "description": "Component library for React layouts.",
+  "homepage": "https://layouts-rc-web.vercel.app",
+  "repository": "https://github.com/YuJM/layouts-rc",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
