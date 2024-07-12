@@ -1,41 +1,46 @@
 # Layouts-rc
 
-Component library for React layouts.
+> React component library for layouts.
+
+Inspired by flutter layout widgets.[(link)](https://docs.flutter.dev/ui/widgets/layout)
 
 - Typesafe
-- with tailwindcss - ok
-- with CSS in js - ok
-- with css-modules - ok
+- with tailwindcss - 👌
+- with CSS in js - 👌
+- with css-modules - 👌
 
-## install
+## Install
 
 ```shell
 $ npm install layouts-rc
 ```
 
-## style apply
+## Style apply
 
 ```typescript jsx
 import 'layouts-rc/styles.css'; // top
 import './globals.css';
 ```
 
-## usage
+## Usage
 
 ```typescript jsx
 import {
   SlotBaseComp,
   Scaffold,
+  ScaffoldHeader,
   ScaffoldBody,
   ScaffoldFooter,
-  ScaffoldHeader,
   Row,
   Column,
   Center,
 } from 'layouts-rc';
 ```
+
 ### SlotBaseComp
+
 slot: [DOCS](https://www.radix-ui.com/primitives/docs/utilities/slot)
+
 ```typescript jsx
 <SlotBaseComp asChild>
     <button>button</button>
@@ -45,20 +50,21 @@ slot: [DOCS](https://www.radix-ui.com/primitives/docs/utilities/slot)
 
 <SlotBaseComp as={"button"}>button</SlotBaseComp>
 ```
-### Rest Component [demo](https://layouts-rc-web.vercel.app)
 
-## props
+### Rest Component (Scaffold, Column, Row, Center)
 
-### common props
+[Demo](https://layouts-rc-web.vercel.app)
+
+## Props
+
+### Common props
 
 | Prop    | Type    | Default |
 | ------- | ------- | ------- |
 | as      | string  | "div"   |
 | asChild | boolean | -       |
 
-
-
-### stack props (Row, Colum)
+### Row & Column Component props
 
 | Prop    | Type                | Default |
 | ------- | ------------------- | ------- |
