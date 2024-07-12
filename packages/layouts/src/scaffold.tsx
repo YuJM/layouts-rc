@@ -1,45 +1,29 @@
 import { clsx } from 'clsx';
 import { createElement, forwardRef } from 'react';
-import { SlotBaseComp } from './slot-base-comp.tsx';
 import type { CommonProps } from './slot-base-comp.tsx';
+import { SlotBaseComp } from './slot-base-comp.tsx';
+import { PREFIX } from './common.ts';
 
-const Scaffold = forwardRef<HTMLElement, CommonProps>(function Scaffold(
-  { className, children, ...props },
-  ref,
-) {
-  return createElement(
-    SlotBaseComp,
-    { ...props, className: clsx('lrc-scaffold', className), ref },
-    children,
-  );
-});
-const ScaffoldHeader = forwardRef<HTMLElement, CommonProps>(
-  function ScaffoldHeader({ className, children, ...props }, ref) {
+function genScaffold(compClass: string) {
+  return forwardRef<HTMLElement, CommonProps>(function (
+    { className, children, ...props },
+    ref,
+  ) {
     return createElement(
       SlotBaseComp,
-      { ...props, className: clsx('lrc-scaffold-header', className), ref },
+      { ...props, className: clsx(compClass, className), ref },
       children,
     );
-  },
-);
-const ScaffoldBody = forwardRef<HTMLElement, CommonProps>(function ScaffoldBody(
-  { className, children, ...props },
-  ref,
-) {
-  return createElement(
-    SlotBaseComp,
-    { ...props, className: clsx('lrc-scaffold-body', className), ref },
-    children,
-  );
-});
-const ScaffoldFooter = forwardRef<HTMLElement, CommonProps>(
-  function ScaffoldFooter({ className, children, ...props }, ref) {
-    return createElement(
-      SlotBaseComp,
-      { ...props, className: clsx('lrc-scaffold-footer', className), ref },
-      children,
-    );
-  },
-);
+  });
+}
+
+const Scaffold = genScaffold(`${PREFIX}-scaffold`);
+Scaffold.displayName = 'Scaffold';
+const ScaffoldHeader = genScaffold(`${PREFIX}-scaffold-header`);
+ScaffoldHeader.displayName = 'ScaffoldHeader';
+const ScaffoldBody = genScaffold(`${PREFIX}-scaffold-body`);
+ScaffoldBody.displayName = 'ScaffoldBody';
+const ScaffoldFooter = genScaffold(`${PREFIX}-scaffold-footer`);
+ScaffoldFooter.displayName = 'ScaffoldFooter';
 
 export { ScaffoldFooter, ScaffoldBody, ScaffoldHeader, Scaffold };

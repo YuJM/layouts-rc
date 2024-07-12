@@ -1,41 +1,41 @@
 import { clsx } from 'clsx';
-import { createElement, forwardRef } from 'react';
-import { SlotBaseComp } from './slot-base-comp.tsx';
+import { createElement, CSSProperties, forwardRef } from 'react';
 import type { CommonProps } from './slot-base-comp.tsx';
+import { SlotBaseComp } from './slot-base-comp.tsx';
+import { PREFIX } from './common.ts';
+import { useSize } from './utils.tsx';
 
 /*row column center*/
+interface StackProps extends CommonProps {
+  gap?: CSSProperties['gap'] | number;
+}
 
-const Row = forwardRef<HTMLElement, CommonProps>(function StackRow(
-  { className, children, ...props },
-  ref,
-) {
-  return createElement(
-    SlotBaseComp,
-    { ...props, className: clsx('lrc-row', className), ref },
-    children,
-  );
-});
+function genStack(compClass: string) {
+  return forwardRef<HTMLElement, StackProps>(function (
+    { className, children, gap, style, ...props },
+    ref,
+  ) {
+    const size = useSize(gap);
+    return createElement(
+      SlotBaseComp,
+      {
+        ...props,
+        className: clsx(compClass, className),
+        style: { gap: size, ...style },
+        ref,
+      },
+      children,
+    );
+  });
+}
 
-const Column = forwardRef<HTMLElement, CommonProps>(function StackColumn(
-  { className, children, ...props },
-  ref,
-) {
-  return createElement(
-    SlotBaseComp,
-    { ...props, className: clsx('lrc-column', className), ref },
-    children,
-  );
-});
+const Row = genStack(`${PREFIX}-row`);
+Row.displayName = 'Row';
 
-const Center = forwardRef<HTMLElement, CommonProps>(function Stack(
-  { className, children, ...props },
-  ref,
-) {
-  return createElement(
-    SlotBaseComp,
-    { ...props, className: clsx('lrc-center', className), ref },
-    children,
-  );
-});
+const Column = genStack(`${PREFIX}-column`);
+Column.displayName = 'Column';
+
+const Center = genStack(`${PREFIX}-center`);
+Center.displayName = 'Center';
 
 export { Center, Row, Column };
