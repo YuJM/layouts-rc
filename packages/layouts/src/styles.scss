@@ -1,0 +1,41 @@
+$prefix: 'lrc';
+
+.#{$prefix}-scaffold {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'header'
+      'body'
+      'footer';
+
+    &-header {
+      grid-area: header;
+    }
+
+    &-body {
+      grid-area: body;
+      overflow-y: auto;
+    }
+
+    &-footer {
+      grid-area: footer;
+    }
+  }
+
+/*stack*/
+.#{$prefix}-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.#{$prefix}-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.#{$prefix}-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
