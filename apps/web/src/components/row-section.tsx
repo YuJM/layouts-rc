@@ -1,6 +1,6 @@
 'use client';
 import { Row } from 'layouts-rc';
-import { StackItem } from './stackItem.tsx';
+import { StackItem } from './stack-item.tsx';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 
 const scope = { Row, StackItem };

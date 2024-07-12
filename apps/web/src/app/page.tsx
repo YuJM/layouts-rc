@@ -1,7 +1,7 @@
-import { RowSection } from '../components/rowSection.tsx';
-import { ColumnSection } from '../components/columnSection.tsx';
-import { ScaffoldSection } from '../components/scaffoldSection.tsx';
-import { CenterSection } from '../components/centerSection.tsx';
+import { RowSection } from '../components/row-section.tsx';
+import { ColumnSection } from '../components/column-section.tsx';
+import { ScaffoldSection } from '../components/scaffold-section.tsx';
+import { CenterSection } from '../components/center-section.tsx';
 
 export default function Page() {
   return (

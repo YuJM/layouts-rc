@@ -1,16 +1,17 @@
 'use client';
-import { Center, Column } from 'layouts-rc';
-import { StackItem } from './stackItem.tsx';
+import { Column } from 'layouts-rc';
+import { StackItem } from './stack-item.tsx';
 import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live';
 
-const scope = { Center, StackItem };
-const code = `<Center className={'bg-white p-20'}>
+const scope = { Column, StackItem };
+const code = `<Column className={'bg-white p-10'} gap={12}>
       <StackItem />
-</Center>`;
-
-export const CenterSection = () => (
+      <StackItem />
+      <StackItem />
+    </Column>`;
+export const ColumnSection = () => (
   <section className={'h-screen'}>
-    <h2 className={'section-title'}>Center</h2>
+    <h2 className={'section-title'}>Column</h2>
     <LiveProvider code={code} scope={scope}>
       <div className={'grid grid-cols-2 gap-4'}>
         <LiveEditor />
