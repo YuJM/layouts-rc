@@ -5,7 +5,7 @@ import { CenterSection } from '../components/center-section.tsx';
 
 export default function Page() {
   return (
-    <main className="flex flex-col items-center min-h-screen p-24">
+    <main className="flex flex-col items-center min-h-screen container mx-auto">
       <ScaffoldSection />
       <RowSection />
       <ColumnSection />
