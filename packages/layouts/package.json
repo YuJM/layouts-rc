@@ -1,6 +1,6 @@
 {
   "name": "layouts-rc",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Component library for React layouts.",
   "keywords": [
     "react",
