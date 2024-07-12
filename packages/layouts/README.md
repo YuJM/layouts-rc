@@ -16,8 +16,8 @@ $ npm install layouts-rc
 ## style apply
 
 ```typescript jsx
-// import './globals.css';
-import 'layouts-rc/styles.css';
+import 'layouts-rc/styles.css'; // top
+import './globals.css';
 ```
 
 ## usage
