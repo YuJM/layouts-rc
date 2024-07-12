@@ -20,6 +20,7 @@ module.exports = {
   parserOptions: {
     project,
   },
+  plugins: ["only-warn"],
   globals: {
     JSX: true,
   },
@@ -28,9 +29,6 @@ module.exports = {
       typescript: {
         project,
       },
-      node: {
-        extensions: [".mjs", ".js", ".jsx", ".ts", ".tsx"],
-      },
     },
   },
   ignorePatterns: ["node_modules/", "dist/", ".eslintrc.js", "**/*.css"],
@@ -38,12 +36,4 @@ module.exports = {
   rules: {
     "import/no-default-export": "off",
   },
-  overrides: [
-    {
-      files: ["*.config.js"],
-      env: {
-        node: true,
-      },
-    },
-  ],
 };
