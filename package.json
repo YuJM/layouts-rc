@@ -1,5 +1,7 @@
 {
+  "name": "layouts-rc-repo",
   "private": true,
+  "description": "Component library for React layouts.",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -17,5 +19,4 @@
   "engines": {
     "node": ">=18"
   },
-  "name": "with-tailwind"
 }
