@@ -1,11 +1,12 @@
 'use client';
-import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live';
+import { LiveError, LivePreview, LiveProvider } from 'react-live';
 import {
   Scaffold,
   ScaffoldBody,
   ScaffoldFooter,
   ScaffoldHeader,
 } from 'layouts-rc';
+import { CustomLiveEditor } from './custom-live-editor.tsx';
 
 const scope = { Scaffold, ScaffoldBody, ScaffoldFooter, ScaffoldHeader };
 const code = `<Scaffold className="h-[600px] w-[400px] text-2xl font-semibold">
@@ -35,7 +36,7 @@ export function ScaffoldSection() {
       <LiveProvider code={code} scope={scope}>
         <div className="flex flex-col items-center gap-4">
           <LivePreview />
-          <LiveEditor />
+          <CustomLiveEditor />
         </div>
         <LiveError />
       </LiveProvider>

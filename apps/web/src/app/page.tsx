@@ -6,6 +6,7 @@ import { CenterSection } from '../components/center-section.tsx';
 export default function Page() {
   return (
     <main className="flex flex-col items-center min-h-screen container mx-auto">
+      <h1 className="text-5xl font-bold my-16">Layouts-rc</h1>
       <ScaffoldSection />
       <RowSection />
       <ColumnSection />

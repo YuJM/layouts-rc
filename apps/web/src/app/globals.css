@@ -28,6 +28,9 @@ body {
 
 @layer components {
   .section-title {
-    @apply text-center text-4xl font-bold mb-16;
+    @apply text-center text-3xl font-semibold mb-10;
+  }
+  .stack-panel {
+    @apply bg-white rounded-md;
   }
 }

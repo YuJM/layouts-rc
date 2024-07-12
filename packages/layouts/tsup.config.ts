@@ -6,7 +6,6 @@ export default defineConfig((options) => ({
   format: ['cjs', 'esm'],
   dts: true,
   sourcemap: false,
-  clean: true,
   external: ['react'],
   esbuildPlugins: [sassPlugin()],
   ...options,
