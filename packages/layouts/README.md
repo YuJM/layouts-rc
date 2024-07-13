@@ -12,7 +12,7 @@ Inspired by flutter layout widgets.[(link)](https://docs.flutter.dev/ui/widgets/
 ## Install
 
 ```shell
-$ npm install layouts-rc
+npm install layouts-rc
 ```
 
 ## Style apply
