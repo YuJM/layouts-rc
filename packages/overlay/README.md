@@ -1,37 +1,47 @@
 # Overlay-manger-rc
 
 > React overlay component manager
+
 ## Feature
-* (alert-dialog, dialog, sheet...) open, close state **no more management**.
-* It's okay to have multiple overlay.
-* Delivering data to Overlay component Props.
-* Detect when an overlay component is closed.
-    - The resulting data is received on close.
+
+- (alert-dialog, dialog, sheet...) open, close state **no more management**.
+- It's okay to have multiple overlay.
+- Delivering data to Overlay component Props.
+- Detect when an overlay component is closed.
+  - The resulting data is received on close.
 
 ## Install
 
 npm
+
 ```shell
 npm install overlay-manager-rc
 ```
+
 yarn
+
 ```shell
 yarn add overlay-manager-rc
 ```
+
 pnpm
+
 ```shell
 pnpm add overlay-manager-rc
 ```
 
 ## Setting
+
 ex) nextjs(app router) + shadcn-ui(radix-ui)
 
 already install
-* alert-dialog
-* dialog
-* sheet
+
+- alert-dialog
+- dialog
+- sheet
 
 ### Step1
+
 make file `OverlayManagerProvider.tsx`;
 
 ```typescript jsx
@@ -56,10 +66,12 @@ export function OverlayManagerProvider<T = never, R = never>({
 }
 
 ```
+
 ### Step2
+
 ```typescript jsx
    {overlays.map((contentRender) => {
-                const { close, content: ContentComponent, data } = contentRender;   
+                const { close, content: ContentComponent, data } = contentRender;
 
                 if (typeof ContentComponent !== 'function') {
                     return null;
@@ -122,7 +134,7 @@ export function OverlayManagerProvider<T = never, R = never>({
                             </Sheet.Root>
                           );
                         }
-        
+
                         if (kind === 'confirm') {
                           return (
                             <Dialog.Root
@@ -134,7 +146,7 @@ export function OverlayManagerProvider<T = never, R = never>({
                             </Dialog.Root>
                           );
                         }
-        
+
                         return (
                           <Dialog.Root
                             key={contentRender.id}
@@ -147,4 +159,46 @@ export function OverlayManagerProvider<T = never, R = never>({
                         );*/
             })}
 ```
+
 ## Usage
+
+### Create overlay component
+
+```typescript jsx
+import type { OverlayContentProps } from 'overlay-manager-rc';
+
+export function OverlayContentComponent({ data, close }: OverlayContentProps<string>) {
+    return (<div>Get Data: {data}</div>)
+}
+```
+
+### Open overlay
+
+```typescript jsx
+'use client';
+
+import { useOverlayManager } from 'overlay-manager-rc';
+
+export function OverlaySection() {
+  const { overlayOpen } = useOverlayManager();
+  const handleOpenAlert = () => {
+    overlayOpen?.({
+      content: OverlayContentComponent,
+      data: 'Input Data',
+    });
+  };
+  return (
+          <section className="md:h-screen">
+            <div className="flex flex-col gap-10">
+              <Button
+                      onClick={() => {
+                        handleOpenAlert();
+                      }}
+              >
+                show alert
+              </Button>
+            </div>
+          </section>
+  );
+}
+```
