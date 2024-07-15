@@ -1,23 +1,25 @@
 {
   "name": "overlay-manager-rc",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "React overlay component manager",
   "keywords": [
+    "front-end",
     "react",
     "nextjs",
     "layout",
-    "front-end",
-    "radix",
-    "shadcn",
+    "overlay",
+    "dialog",
+    "alert",
+    "sheet",
+    "management",
+    "radix-ui",
+    "shadcn-ui",
     "headless"
   ],
-  "homepage": "https://layouts-rc-web.vercel.app",
-  "repository": "https://github.com/YuJM/layouts-rc/tree/main/packages/layouts#readme",
+  "homepage": "https://layouts-rc-web.vercel.app/overlay",
+  "repository": "https://github.com/YuJM/layouts-rc/tree/main",
   "license": "MIT",
   "author": "Yujm",
-  "sideEffects": [
-    "**/*.css"
-  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
@@ -38,6 +40,7 @@
   },
   "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
+    "react-use": "^17.5.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -45,7 +48,6 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@vercel/style-guide": "^6.0.0",
-    "autoprefixer": "^10.4.18",
     "tsup": "^8.1.0",
     "typescript": "^5.3.3"
   },
