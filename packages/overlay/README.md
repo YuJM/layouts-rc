@@ -1,25 +1,11 @@
 # Overlay-manger-rc
 
-> React component library for layouts.
-
-Inspired by flutter layout widgets.[(link)](https://docs.flutter.dev/ui/widgets/layout)
-
-- Typesafe
-- with tailwindcss - 👌
-- with CSS in js - 👌
-- with css-modules - 👌
+> React overlay component manager
 
 ## Install
 
 ```shell
-npm install layouts-rc
-```
-
-## Style apply
-
-```typescript jsx
-import 'layouts-rc/styles.css'; // top
-import './globals.css';
+npm install overlay-manager-rc
 ```
 
 ## Usage
@@ -56,18 +42,3 @@ slot: [DOCS](https://www.radix-ui.com/primitives/docs/utilities/slot)
 [Demo](https://layouts-rc-web.vercel.app)
 
 ## Props
-
-### Common props
-
-| Prop    | Type    | Default |
-| ------- | ------- | ------- |
-| as      | string  | "div"   |
-| asChild | boolean | -       |
-
-### Row & Column Component props
-
-| Prop    | Type                | Default |
-| ------- | ------------------- | ------- |
-| gap     | string\|number      | -       |
-| justify | css(justifyContent) | -       |
-| items   | css(alignItems)     | -       |

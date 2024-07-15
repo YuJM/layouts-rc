@@ -1,7 +1,7 @@
 {
   "name": "overlay-manager-rc",
   "version": "0.1.1",
-  "description": "React overlay component mana",
+  "description": "React overlay component manager",
   "keywords": [
     "react",
     "nextjs",
