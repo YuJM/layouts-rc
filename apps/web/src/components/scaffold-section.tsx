@@ -9,7 +9,9 @@ import {
 import { CustomLiveEditor } from './custom-live-editor.tsx';
 
 const scope = { Scaffold, ScaffoldBody, ScaffoldFooter, ScaffoldHeader };
-const code = `<Scaffold className="h-[600px] w-[400px] text-2xl font-semibold">
+const code = `
+ <Scaffold className="h-[600px] w-[400px] text-2xl font-semibold">
+ <!--try remove ScaffoldHeader-->
   <ScaffoldHeader className="border-4 border-white px-4 py-2">
     Header
   </ScaffoldHeader>
@@ -24,6 +26,7 @@ const code = `<Scaffold className="h-[600px] w-[400px] text-2xl font-semibold">
       </div>
     </div>
   </ScaffoldBody>
+  <!--try remove ScaffoldFooter-->
   <ScaffoldFooter className="border-4 border-white px-4 py-2">
     Footer
   </ScaffoldFooter>
