@@ -2,7 +2,7 @@
 
 import { useOverlayManager } from 'overlay-manager-rc';
 import { TestContent } from '@/overlays/test-content.tsx';
-import { Button } from '@/ui/ui/button.tsx';
+import { Button } from '@components/ui/button.tsx';
 
 export function AlertSection() {
   const { overlayOpen } = useOverlayManager();

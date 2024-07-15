@@ -11,7 +11,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/ui/ui/alert-dialog.tsx';
+} from '@components/ui/alert-dialog.tsx';
 
 export function OverlayManagerProvider<T = never, R = never>({
   children,
