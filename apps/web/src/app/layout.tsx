@@ -2,8 +2,13 @@ import 'layouts-rc/styles.css';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { OverlayManagerProvider } from '@components/overlay-manager-provider.tsx';
+import { cn } from '@/lib/utils.ts';
 
-const inter = Inter({ subsets: ['latin'] });
+const fontSans = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
 
 export const metadata: Metadata = {
   title: 'Layouts-rc',
@@ -14,10 +19,17 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}): JSX.Element {
+}) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          'min-h-screen font-sans antialiased dark',
+          fontSans.variable,
+        )}
+      >
+        <OverlayManagerProvider>{children}</OverlayManagerProvider>
+      </body>
     </html>
   );
 }

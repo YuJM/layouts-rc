@@ -11,7 +11,7 @@ import { CustomLiveEditor } from './custom-live-editor.tsx';
 const scope = { Scaffold, ScaffoldBody, ScaffoldFooter, ScaffoldHeader };
 const code = `
  <Scaffold className="h-[600px] w-[400px] text-2xl font-semibold">
-  <ScaffoldHeader className="border-4 border-white px-4 py-2">
+  <ScaffoldHeader className="border-4 border-slate-200/75 px-4 py-2">
     Header (try remove)
   </ScaffoldHeader>
   <ScaffoldBody>
@@ -25,7 +25,7 @@ const code = `
       </div>
     </div>
   </ScaffoldBody>
-  <ScaffoldFooter className="border-4 border-white px-4 py-2">
+  <ScaffoldFooter className="border-4 border-slate-200/75 px-4 py-2">
     Footer (try remove)
   </ScaffoldFooter>
 </Scaffold>`;
