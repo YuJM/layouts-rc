@@ -5,8 +5,9 @@
 ## Feature
 
 - (alert-dialog, dialog, sheet...) open, close state **no more management**.
+- **You don't need to worry about declaring overlay component**.
 - It's okay to have multiple overlay.
-- Delivering data to Overlay component Props.
+- Delivering data to overlay component Props.
 - Detect when an overlay component is closed.
   - The resulting data is received on close.
 
@@ -230,3 +231,43 @@ export function OverlaySection() {
   );
 }
 ```
+#### Receive resulting data when closing
+
+```typescript jsx
+export function OverlayContentComponent({data, close}: OverlayContentProps<string, boolean>) {
+
+  return (<div>Get Data: {data}
+    <button onClick={() => {close(false);}}>close</button>
+  </div>)
+}
+
+/* open handler*/
+const handleOpenAlert = () => {
+  overlayOpen?.({
+    content: OverlayContentComponent,
+    data: 'Input Data',
+    close: (result) => {
+      console.log(result);
+    }
+  });
+}
+```
+## API
+
+`OverlayOpenOption` option
+
+| Prop           | Type                       | Default | Required |
+| -------------- | -------------------------- | ------- |----------|
+| title          | ReactNode                  | -       |          |
+| content        | OverlayContentComponent<T, R> | -       | True     |
+| data           | T                          | -       |          |
+| close          | OverlayCloseType<R>        | -       |          |
+| width          | CSSProperties['width']     | -       |          |
+| height         | CSSProperties['height']    | -       |          |
+| style          | CSSProperties              | -       |          |
+| className      | string                     | -       |          |
+| position       | OverlayPositionType        | -       |          |
+| overlayHidden  | boolean                    | false   |          |
+| kind           | 'overlay' \| 'sheet' \| 'modal' \| 'confirm' | -       |          |
+
+
