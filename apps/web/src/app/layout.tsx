@@ -2,6 +2,7 @@ import 'layouts-rc/styles.css';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import type { ReactNode } from 'react';
 import { OverlayManagerProvider } from '@components/overlay-manager-provider.tsx';
 import { cn } from '@/lib/utils.ts';
 
@@ -15,11 +16,7 @@ export const metadata: Metadata = {
   description: 'Layouts-rc demo site',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body

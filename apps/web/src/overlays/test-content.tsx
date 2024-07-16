@@ -4,7 +4,7 @@ import { Button } from '@components/ui/button.tsx';
 export function TestContent({ data, close }: OverlayContentProps<string>) {
   return (
     <div>
-      test {data}
+      <span>test: {data}</span>
       <Button
         onClick={() => {
           close();

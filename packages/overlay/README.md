@@ -160,6 +160,23 @@ export function OverlayManagerProvider<T = never, R = never>({
             })}
 ```
 
+### Step3
+
+set provider in `Rootlayout`component
+
+```typescript jsx
+  export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+          <html lang="en" suppressHydrationWarning>
+            <body className={'min-h-screen font-sans antialiased dark'}>
+                <OverlayManagerProvider>{children}</OverlayManagerProvider>
+            </body>
+          </html>
+  );
+}
+
+```
+
 ## Usage
 
 ### Create overlay component
@@ -170,6 +187,12 @@ import type { OverlayContentProps } from 'overlay-manager-rc';
 export function OverlayContentComponent({ data, close }: OverlayContentProps<string>) {
     return (<div>Get Data: {data}</div>)
 }
+/* or */
+import type { OverlayContentComponent } from 'overlay-manager-rc';
+
+export const OverlayContentComponent2:OverlayContentComponent<string> = ({ data, close })  => {
+  return (<div>Get Data: {data}</div>)
+} 
 ```
 
 ### Open overlay
@@ -181,10 +204,15 @@ import { useOverlayManager } from 'overlay-manager-rc';
 
 export function OverlaySection() {
   const { overlayOpen } = useOverlayManager();
+
+
   const handleOpenAlert = () => {
     overlayOpen?.({
       content: OverlayContentComponent,
       data: 'Input Data',
+      close: () => {
+          // close logic
+      }
     });
   };
   return (

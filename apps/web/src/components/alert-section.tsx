@@ -9,7 +9,7 @@ export function AlertSection() {
   const handleOpenAlert = () => {
     overlayOpen?.({
       content: TestContent,
-      data: '바람',
+      data: 'hello!!!!',
     });
   };
   return (
