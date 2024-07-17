@@ -1,17 +1,37 @@
 import type { OverlayContentProps } from 'overlay-manager-rc';
-import { Button } from '@components/ui/button.tsx';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog.tsx';
 
-export function TestContent({ data, close }: OverlayContentProps<string>) {
+export function TestContent({
+  open,
+  data,
+  close,
+}: OverlayContentProps<string>) {
   return (
-    <div>
-      <span>test: {data}</span>
-      <Button
-        onClick={() => {
-          close();
-        }}
-      >
-        close
-      </Button>
-    </div>
+    <AlertDialog
+      onOpenChange={(v) => {
+        !v && close();
+      }}
+      open={open}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Alert title</AlertDialogTitle>
+          <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
