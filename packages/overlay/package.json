@@ -1,6 +1,6 @@
 {
   "name": "overlay-manager-rc",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "React overlay component manager",
   "keywords": [
     "front-end",
@@ -20,18 +20,26 @@
   "repository": "https://github.com/YuJM/layouts-rc/tree/main",
   "license": "MIT",
   "author": "Yujm",
+  "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup --clean",
     "dev": "tsup --watch",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
