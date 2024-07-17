@@ -27,10 +27,10 @@ function useOverlayRegister<T, R>() {
   const [overlays, setOverlays] = useState<ContentRenderData<T, R>[]>([]);
 
   useInterval(() => {
-    // Remove component status of close every 30 seconds.
+    // Remove component state of close every 30 seconds.
     setOverlays((prev) => {
       return prev.filter(
-        (renderData) => renderData.status === OVERLAY_TOGGLE_STATE.OPEN,
+        (renderData) => renderData.state === OVERLAY_TOGGLE_STATE.OPEN,
       );
     });
   }, 30 * 1000);
@@ -47,7 +47,7 @@ function useOverlayRegister<T, R>() {
       setOverlays((prev) =>
         prev.map((renderData) => {
           if (renderData.id === id) {
-            renderData.status = OVERLAY_TOGGLE_STATE.CLOSE;
+            renderData.state = OVERLAY_TOGGLE_STATE.CLOSE;
           }
           return renderData;
         }),
@@ -65,7 +65,7 @@ function useOverlayRegister<T, R>() {
     const renderData: ContentRenderData<T> = {
       ...option,
       id,
-      status: OVERLAY_TOGGLE_STATE.OPEN,
+      state: OVERLAY_TOGGLE_STATE.OPEN,
       close: proxyClose,
       data: option.data as T,
     };

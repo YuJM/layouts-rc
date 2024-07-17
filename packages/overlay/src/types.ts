@@ -27,8 +27,9 @@ export type OverlayPositionType = UnionToDiscriminatedType<
   typeof OverlayPosition
 >;
 
-export interface OverlayContentProps<T = undefined, R = any> {
+export interface OverlayContentProps<T = any, R = any> {
   id?: OverlayId;
+  open: boolean;
   data: T;
   close: OverlayCloseType<R>;
 }
@@ -59,7 +60,7 @@ export interface OverlayOpenOption<T = any, R = any> {
 export interface ContentRenderData<T = any, R = any>
   extends OverlayOpenOption<T, R> {
   id: OverlayId;
-  status: OverlayToggleState;
+  state: OverlayToggleState;
   data: T; // override
   close: OverlayCloseType<R>;
 }

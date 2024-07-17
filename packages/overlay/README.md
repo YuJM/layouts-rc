@@ -1,4 +1,4 @@
-# Overlay-manger-rc
+# Overlay-manager-rc
 
 > React overlay component manager
 
@@ -51,12 +51,8 @@ make file `OverlayManagerProvider.tsx`;
 import { useOverlayRegister } from 'overlay-manager-rc';
 import type { ReactNode } from 'react';
 
-export function OverlayManagerProvider<T = never, R = never>({
-                                                                 children,
-                                                             }: {
-    children: ReactNode;
-}) {
-    const { OverlayProvider, overlays } = useOverlayRegister<T, R>();
+export function OverlayManagerProvider({ children }: { children: ReactNode }) {
+  const { OverlayProvider, overlays } = useOverlayRegister();
 
     return (
         <OverlayProvider>
@@ -77,23 +73,36 @@ export function OverlayManagerProvider<T = never, R = never>({
                 if (typeof ContentComponent !== 'function') {
                     return null;
                 }
+               /*----case 1----*/
+  
+                return <ContentComponent
+                        close={contentRender.close}
+                        data={contentRender.data}
+                        id={contentRender.id}
+                        key={contentRender.id}
+                        open={contentRender.state}
+                />
+                
+               /*----case 2----*/
 
+/*
                 return (
                     <AlertDialog
                         key={contentRender.id}
                         onOpenChange={(v) => {
                             !v && close();
                         }}
-                        open={contentRender.status}
+                        open={contentRender.state}
                     >
                         <AlertDialogContent>
                             <AlertDialogHeader>
-                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogTitle>{contentRender.title}</AlertDialogTitle>
                                 <AlertDialogDescription>
                                     <ContentComponent
-                                        close={close}
-                                        data={data}
-                                        id={contentRender.id}
+                                      close={contentRender.close}
+                                      data={contentRender.data}
+                                      id={contentRender.id}
+                                      open={contentRender.state}
                                     />
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
@@ -104,60 +113,9 @@ export function OverlayManagerProvider<T = never, R = never>({
                         </AlertDialogContent>
                     </AlertDialog>
                 );
-                /* if (kind === 'sheet') {
-                          return (
-                            <Sheet.Root
-                              key={contentRender.id}
-                              modal={overlay}
-                              onOpenChange={(v) => !v && close()}
-                              open={contentRender.status}
-                            >
-                              <Sheet.Panel
-                                css={providerSheetPanelStyle}
-                                height={contentRender.height}
-                                onInteractOutside={(e) => e.preventDefault()}
-                                overlay={overlay}
-                                position={position}
-                                style={style}
-                                width={width}
-                              >
-                                {!customHeader && (
-                                  <Sheet.Header side={position}>
-                                    <Sheet.HeaderTitle>{title}</Sheet.HeaderTitle>
-                                  </Sheet.Header>
-                                )}
-                                <ContentComponent
-                                  close={close}
-                                  data={cloneData}
-                                  id={`${contentRender.id}:${index}`}
-                                />
-                              </Sheet.Panel>
-                            </Sheet.Root>
-                          );
-                        }
+*/
 
-                        if (kind === 'confirm') {
-                          return (
-                            <Dialog.Root
-                              key={contentRender.id}
-                              onOpenChange={(v) => !v && close()}
-                              open={contentRender.status}
-                            >
-                              <ContentComponent close={close} data={cloneData} id={contentRender.id} />
-                            </Dialog.Root>
-                          );
-                        }
-
-                        return (
-                          <Dialog.Root
-                            key={contentRender.id}
-                            modal={overlay}
-                            onOpenChange={(v) => !v && close()}
-                            open={contentRender.status}
-                          >
-                            <ContentComponent close={close} data={cloneData} id={contentRender.id} />
-                          </Dialog.Root>
-                        );*/
+               
             })}
 ```
 
@@ -185,14 +143,39 @@ set provider in `Rootlayout`component
 ```typescript jsx
 import type { OverlayContentProps } from 'overlay-manager-rc';
 
-export function OverlayContentComponent({ data, close }: OverlayContentProps<string>) {
+export function OverlayContentComponent({ data, close, open }: OverlayContentProps<string>) {
+    /*case1*/
+    return (<AlertDialog
+                    open={open}
+                    onOpenChange={(v) => {
+                      !v && close();
+                    }}
+            >
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Alert title</AlertDialogTitle>
+                  <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+    );
+    
+    /*----*case2-----*/
+   /*
     return (<div>Get Data: {data}</div>)
+    */
 }
-/* or */
+```
+you can arrow function component
+```typescript jsx
 import type { OverlayContentComponent } from 'overlay-manager-rc';
 
-export const OverlayContentComponent2:OverlayContentComponent<string> = ({ data, close })  => {
-  return (<div>Get Data: {data}</div>)
+export const OverlayContentComponent:OverlayContentComponent<string> = ({ data, close })  => {
+  /* ----- ------------------*/
 } 
 ```
 
@@ -219,11 +202,7 @@ export function OverlaySection() {
   return (
           <section className="md:h-screen">
             <div className="flex flex-col gap-10">
-              <Button
-                      onClick={() => {
-                        handleOpenAlert();
-                      }}
-              >
+              <Button onClick={handleOpenAlert}>
                 show alert
               </Button>
             </div>
@@ -254,12 +233,23 @@ const handleOpenAlert = () => {
 ```
 ## API
 
+`OverlayContentProps<T,R>`
+
+| Prop  | Type                 | Default | Required |
+| ----- | -------------------- | ------- |----------|
+| data  | T                    | -       | Yes      |
+| close | OverlayCloseType<R>  | -       | Yes      |
+| id    | OverlayId            | -       | -        |
+| open  | boolean              | -       | Yes      |
+
+
+
 `OverlayOpenOption` option
 
 | Prop           | Type                       | Default | Required |
 | -------------- | -------------------------- | ------- |----------|
 | title          | ReactNode                  | -       |          |
-| content        | OverlayContentComponent<T, R> | -       | True     |
+| content        | OverlayContentComponent<T, R> | -       | Yes      |
 | data           | T                          | -       |          |
 | close          | OverlayCloseType<R>        | -       |          |
 | width          | CSSProperties['width']     | -       |          |
