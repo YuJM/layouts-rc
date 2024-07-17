@@ -1,6 +1,6 @@
 {
   "name": "layouts-rc",
-  "version": "0.3.4",
+  "version": "0.4.1",
   "description": "React component library for layouts.",
   "keywords": [
     "react",
@@ -15,14 +15,22 @@
   "repository": "https://github.com/YuJM/layouts-rc/tree/main/packages/layouts#readme",
   "license": "MIT",
   "author": "Yujm",
+  "type": "module",
   "sideEffects": [
     "**/*.css"
   ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./styles.css": "./dist/index.css"
   },
