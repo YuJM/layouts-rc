@@ -7,7 +7,7 @@ import { Button } from '@components/ui/button.tsx';
 export function AlertSection() {
   const { overlayOpen } = useOverlayManager();
   const handleOpenAlert = () => {
-    overlayOpen?.({
+    overlayOpen({
       content: TestContent,
       data: 'hello!!!!',
     });

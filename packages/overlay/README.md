@@ -191,7 +191,7 @@ export function OverlaySection() {
 
 
   const handleOpenAlert = () => {
-    overlayOpen?.({
+    overlayOpen({
       content: OverlayContentComponent,
       data: 'Input Data',
       close: () => {
@@ -222,7 +222,7 @@ export function OverlayContentComponent({data, close}: OverlayContentProps<strin
 
 /* open handler*/
 const handleOpenAlert = () => {
-  overlayOpen?.({
+  overlayOpen({
     content: OverlayContentComponent,
     data: 'Input Data',
     close: (result) => {
@@ -232,8 +232,31 @@ const handleOpenAlert = () => {
 }
 ```
 ## API
+### useOverlayManager
+**returns**
 
-### `OverlayContentProps<T,R>`
+| name            | description                   | parameter         |
+|-----------------|-------------------------------|-------------------|
+| overlayOpen     | open overlay component        | OverlayOpenOption |
+| closeAllOverlay | close all overlay component   | -                 |
+
+#### OverlayOpenOption
+
+| Prop           | Type                                         | Default | Required   |
+|----------------|----------------------------------------------|---------|------------|
+| content        | OverlayContentComponent<T, R>                | -       | Yes        |
+| data           | T                                            | -       |            |
+| close          | OverlayCloseType<R>                          | -       |            |
+| title          | ReactNode                                    | -       |            |
+| width          | CSSProperties['width']                       | -       |            |
+| height         | CSSProperties['height']                      | -       |            |
+| style          | CSSProperties                                | -       |            |
+| className      | string                                       | -       |            |
+| position       | OverlayPositionType                          | -       |            |
+| overlayHidden  | boolean                                      | false   |            |
+| kind           | 'overlay' \| 'sheet' \| 'modal' \| 'confirm' | -       |            |
+
+#### OverlayContentProps<T, R>
 
 | Prop  | Type                 | Default | Required |
 | ----- | -------------------- | ------- |----------|
@@ -244,20 +267,5 @@ const handleOpenAlert = () => {
 
 
 
-### `OverlayOpenOption`
-
-| Prop           | Type                       | Default | Required |
-| -------------- | -------------------------- | ------- |----------|
-| title          | ReactNode                  | -       |          |
-| content        | OverlayContentComponent<T, R> | -       | Yes      |
-| data           | T                          | -       |          |
-| close          | OverlayCloseType<R>        | -       |          |
-| width          | CSSProperties['width']     | -       |          |
-| height         | CSSProperties['height']    | -       |          |
-| style          | CSSProperties              | -       |          |
-| className      | string                     | -       |          |
-| position       | OverlayPositionType        | -       |          |
-| overlayHidden  | boolean                    | false   |          |
-| kind           | 'overlay' \| 'sheet' \| 'modal' \| 'confirm' | -       |          |
 
 

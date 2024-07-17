@@ -66,7 +66,7 @@ export interface ContentRenderData<T = any, R = any>
 }
 
 export interface OverlayContextOption<T = any, R = any> {
-  overlayOpen?: (option: OverlayOpenOption<T, R>) => OverlayId;
+  overlayOpen: (option: OverlayOpenOption<T, R>) => OverlayId;
   closeAllOverlay: VoidFunction;
 }
 

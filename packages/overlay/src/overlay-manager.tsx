@@ -13,9 +13,10 @@ import { OVERLAY_CLOSE_EVENT_NAME, OVERLAY_TOGGLE_STATE } from './types.ts';
 
 type Args = any[];
 
-const emptyFunc: () => void = () => {};
+const emptyFunc: VoidFunction = () => {};
 
 const OverlayManagerContext = createContext<OverlayContextOption>({
+  overlayOpen: () => '',
   closeAllOverlay: () => {},
 });
 
@@ -122,7 +123,7 @@ function useOverlayStateful<DATA = any, RESULT = any>(
   });
 
   function openModal(data?: DATA) {
-    setId(overlayOpen?.({ content, data, kind: 'modal' }));
+    setId(overlayOpen({ content, data, kind: 'modal' }));
   }
 
   return [openModal] as const;
