@@ -1,5 +1,5 @@
 # Overlay-manager-rc
-
+Inspired by [angular cdk overlay](https://material.angular.io/cdk/overlay/overview)
 > React overlay component manager
 
 ## Feature
@@ -144,7 +144,7 @@ set provider in `Rootlayout`component
 import type { OverlayContentProps } from 'overlay-manager-rc';
 
 export function OverlayContentComponent({ data, close, open }: OverlayContentProps<string>) {
-    /*case1*/
+  /*----*case1-----*/
     return (<AlertDialog
                     open={open}
                     onOpenChange={(v) => {
@@ -175,7 +175,7 @@ you can arrow function component
 import type { OverlayContentComponent } from 'overlay-manager-rc';
 
 export const OverlayContentComponent:OverlayContentComponent<string> = ({ data, close })  => {
-  /* ----- ------------------*/
+  /* ----------------------- */
 } 
 ```
 
@@ -233,7 +233,7 @@ const handleOpenAlert = () => {
 ```
 ## API
 
-`OverlayContentProps<T,R>`
+### `OverlayContentProps<T,R>`
 
 | Prop  | Type                 | Default | Required |
 | ----- | -------------------- | ------- |----------|
@@ -244,7 +244,7 @@ const handleOpenAlert = () => {
 
 
 
-`OverlayOpenOption` option
+### `OverlayOpenOption`
 
 | Prop           | Type                       | Default | Required |
 | -------------- | -------------------------- | ------- |----------|
