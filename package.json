@@ -10,9 +10,12 @@
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "clean": "turbo clean",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "change-check": "pnpm changeset",
+    "update-version": "pnpm changeset version"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "turbo": "^2.0.6"
