@@ -3,6 +3,7 @@ export type {
   OverlayContentProps,
   OverlayContentComponent,
   OverlayCloseType,
+  OverlayRegisterReturn,
 } from './types';
 
 export {

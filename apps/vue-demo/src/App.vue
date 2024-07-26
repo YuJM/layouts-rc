@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
-import { inject, watch, watchEffect } from 'vue'
-import { OverlayRegisterReturn } from 'overlay-manager-vue'
+import { inject, ref, watch, watchEffect } from 'vue'
+import type { OverlayRegisterReturn } from 'overlay-manager-vue'
 import ExampleOverlay from '@/components/ExampleOverlay.vue'
 
-const { overlays, overlayOpen } = inject<OverlayRegisterReturn>('overlay-manager', { overlays: [] })
+const { overlays, overlayOpen } = inject<OverlayRegisterReturn>(
+  'overlay-manager'
+) as OverlayRegisterReturn
 
 const openOverlay = () => {
   overlayOpen({
     content: ExampleOverlay,
-    data: { message: 'This is an example overlay.' },
+    data: { message: 'This is input Data' },
     kind: 'modal'
   })
 }
-
-watchEffect(() => {
-  console.log(overlays.value)
-}, overlays.value)
 </script>
 
 <template>
