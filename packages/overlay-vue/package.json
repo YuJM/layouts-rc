@@ -1,0 +1,58 @@
+{
+  "name": "overlay-manager-vue",
+  "version": "0.3.1",
+  "description": "Vue overlay component manager",
+  "author": "Yujm",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/overlay-manager-vue.git"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "vue-tsc --noEmit && tsup",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write src/",
+    "test": "vitest"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.0"
+  },
+  "dependencies": {
+    "radix-vue": "^0.4.0",
+    "@vueuse/core": "^10.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "@vue/eslint-config-typescript": "^11.0.3",
+    "@vue/test-utils": "^2.3.2",
+    "eslint": "^8.38.0",
+    "eslint-plugin-vue": "^9.11.0",
+    "prettier": "^2.8.7",
+    "tsup": "^7.1.0",
+    "typescript": "~5.0.4",
+    "vite": "^4.3.9",
+    "vitest": "^0.32.0",
+    "vue": "^3.3.4",
+    "vue-tsc": "^1.6.5"
+  },
+  "keywords": [
+    "vue",
+    "overlay",
+    "modal",
+    "dialog",
+    "vue3",
+    "typescript"
+  ]
+}
