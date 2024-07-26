@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
-import { inject, ref, watch, watchEffect } from 'vue'
+import { inject } from 'vue'
 import type { OverlayRegisterReturn } from 'overlay-manager-vue'
 import ExampleOverlay from '@/components/ExampleOverlay.vue'
 
@@ -39,8 +39,9 @@ const openOverlay = () => {
     v-for="overlay in overlays"
     :key="overlay.id"
     :is="overlay.content"
-    v-bind="overlay"
-    v-bind:open="overlay.state"
+    :open="overlay.state"
+    :data="overlay.data"
+    :close="overlay.close"
   />
 </template>
 
