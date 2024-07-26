@@ -98,7 +98,7 @@ importers:
         version: 14.2.3(@babel/core@7.24.8)(react-dom@18.2.0)(react@18.2.0)
       overlay-manager-rc:
         specifier: workspace:*
-        version: link:../../packages/overlay
+        version: link:../../packages/overlay-rc
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -224,7 +224,7 @@ importers:
         specifier: ^5.3.3
         version: 5.4.5
 
-  packages/overlay:
+  packages/overlay-rc:
     dependencies:
       react:
         specifier: ^18.2.0

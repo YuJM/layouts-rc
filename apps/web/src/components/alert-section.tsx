@@ -1,6 +1,6 @@
 'use client';
 
-import { useOverlayManager } from 'overlay-manager-rc';
+import { useOverlayManager } from 'overlay-manager-rc/dist';
 import { TestContent } from '@/overlays/test-content.tsx';
 import { Button } from '@components/ui/button.tsx';
 
