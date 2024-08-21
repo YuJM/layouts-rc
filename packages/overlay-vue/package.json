@@ -1,13 +1,14 @@
 {
   "name": "overlay-manager-vue",
-  "version": "0.3.3-beta.2",
+  "version": "0.3.3-beta.3",
   "description": "Vue overlay component manager",
   "author": "Yujm",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/overlay-manager-vue.git"
+    "url": "https://github.com/YuJM/layouts-rc/tree/main"
   },
+  "homepage": "https://github.com/YuJM/layouts-rc/blob/main/packages/overlay-vue/README.md",
   "keywords": [
     "vue",
     "overlay",
