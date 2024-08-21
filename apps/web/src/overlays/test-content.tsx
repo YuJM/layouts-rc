@@ -1,4 +1,4 @@
-import type { OverlayContentProps } from 'overlay-manager-rc';
+import type { OverlayContentProps } from 'overlay-manager-rc/dist';
 import {
   AlertDialog,
   AlertDialogAction,
