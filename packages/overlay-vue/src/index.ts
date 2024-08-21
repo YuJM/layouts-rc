@@ -7,8 +7,7 @@ export type {
 } from './types';
 
 export {
-  OverlayManagerKey,
-  useOverlayRegister,
+  overlayManagerPlugin,
   useOverlayManager,
   useOverlayStateful,
 } from './overlay-manager';

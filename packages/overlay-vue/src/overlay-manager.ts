@@ -1,12 +1,11 @@
 // overlay-manager.ts
-import { inject, markRaw, provide, ref, Ref, shallowRef } from 'vue';
+import { inject, markRaw, ref, shallowRef, App, Plugin } from 'vue';
 import { useIntervalFn } from '@vueuse/core';
 import type {
   CloseEventDetail,
   ContentRenderData,
   OverlayCloseType,
   OverlayContentComponent,
-  OverlayContextOption,
   OverlayOpenOption,
   OverlayRegisterReturn,
 } from './types';
@@ -14,9 +13,8 @@ import { OVERLAY_CLOSE_EVENT_NAME, OVERLAY_TOGGLE_STATE } from './types';
 
 const emptyFunc: VoidFunction = () => {};
 
-export const OverlayManagerKey = Symbol('OverlayManager');
-
-export function useOverlayRegister<T, R>(): OverlayRegisterReturn<T, R> {
+const OverlayManagerKey = Symbol('OverlayManager');
+function useOverlayRegister<T, R>(): OverlayRegisterReturn<T, R> {
   const overlays = shallowRef<ContentRenderData<T, R>[]>([]);
 
   useIntervalFn(() => {
@@ -68,13 +66,20 @@ export function useOverlayRegister<T, R>(): OverlayRegisterReturn<T, R> {
     overlays.value = [];
   };
 
-  // provide(OverlayManagerKey, { overlayOpen, closeAllOverlay });
-
   return { overlays, overlayOpen, closeAllOverlay };
 }
 
+export function overlayManagerPlugin(): Plugin {
+  return {
+    install: (app: App) => {
+      const overlayManager = useOverlayRegister();
+      app.provide(OverlayManagerKey, overlayManager);
+    },
+  };
+}
+
 export function useOverlayManager() {
-  return inject(OverlayManagerKey) as OverlayContextOption;
+  return inject(OverlayManagerKey) as OverlayRegisterReturn;
 }
 
 export function useOverlayStateful<DATA = any, RESULT = any>(
