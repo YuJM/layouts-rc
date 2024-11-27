@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useOverlayRegister } from 'overlay-manager-rc/dist';
+import { useOverlayRegister } from 'overlay-manager-rc';
 
 export function OverlayManagerProvider({ children }: { children: ReactNode }) {
   const { OverlayProvider, overlays } = useOverlayRegister();

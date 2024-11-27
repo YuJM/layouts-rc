@@ -2,11 +2,11 @@ export type {
   OverlayContentProps,
   OverlayContentComponent,
   OverlayCloseType,
-} from './types.ts';
+  OverlayOpenOptions,
+  OverlayPosition,
+  OverlayKind,
+} from './types';
 
-export {
-  OverlayManagerContext,
-  useOverlayRegister,
-  useOverlayManager,
-  useOverlayStateful,
-} from './overlay-manager.tsx';
+export { OVERLAY_EVENTS, OVERLAY_POSITION } from './constants.ts';
+
+export { useOverlay, OverlayContainer } from './overlay-manager';

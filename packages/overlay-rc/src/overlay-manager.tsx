@@ -1,137 +1,171 @@
-import type { ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
-import { useEvent, useInterval } from 'react-use';
+import { computed, signal } from '@preact/signals-react';
+import type { CSSProperties, FC } from 'react';
+import { useCallback } from 'react';
+import { nanoid } from 'nanoid';
 import type {
   CloseEventDetail,
-  ContentRenderData,
-  OverlayCloseType,
-  OverlayContentComponent,
-  OverlayContextOption,
-  OverlayOpenOption,
-} from './types.ts';
-import { OVERLAY_CLOSE_EVENT_NAME, OVERLAY_TOGGLE_STATE } from './types.ts';
+  OverlayId,
+  OverlayKind,
+  OverlayOpenOptions,
+  OverlayPosition,
+  OverlayRenderData,
+} from './types';
+import { OVERLAY_EVENTS } from './constants.ts';
 
-type Args = any[];
+const overlaysSignal = signal<Map<OverlayId, OverlayRenderData<any, any>>>(
+  new Map(),
+);
+const defaultPosition: OverlayPosition = 'center';
+const defaultKind: OverlayKind = 'overlay';
 
-const emptyFunc: VoidFunction = () => {};
-
-const OverlayManagerContext = createContext<OverlayContextOption>({
-  overlayOpen: () => '',
-  closeAllOverlay: () => {},
+const activeOverlays = computed(() => {
+  return Array.from(overlaysSignal.value.values())
+    .filter(
+      (overlay): overlay is OverlayRenderData & { state: true } =>
+        overlay.state,
+    )
+    .sort((a, b) => (a.id > b.id ? 1 : -1));
 });
 
-function useOverlayManager() {
-  return useContext(OverlayManagerContext);
+function dispatchOverlayEvent<TResult>(
+  eventName: (typeof OVERLAY_EVENTS)[keyof typeof OVERLAY_EVENTS],
+  detail: CloseEventDetail<TResult>,
+): void {
+  window.dispatchEvent(new CustomEvent(eventName, { detail }));
 }
 
-function useOverlayRegister<T, R>() {
-  const [overlays, setOverlays] = useState<ContentRenderData<T, R>[]>([]);
-
-  useInterval(() => {
-    // Remove component state of close every 30 seconds.
-    setOverlays((prev) => {
-      return prev.filter(
-        (renderData) => renderData.state === OVERLAY_TOGGLE_STATE.OPEN,
-      );
-    });
-  }, 30 * 1000);
-
-  const closeHandler = (id: string, isEvent = false) => ({
-    apply: async (target: OverlayCloseType<R>, thisArg: any, args: Args) => {
-      if (isEvent) {
-        const customEvent = new CustomEvent(OVERLAY_CLOSE_EVENT_NAME, {
-          detail: { targetId: id, args } as CloseEventDetail,
-        });
-        window.dispatchEvent(customEvent);
-      }
-      await Reflect.apply(target, thisArg, args);
-      setOverlays((prev) =>
-        prev.map((renderData) => {
-          if (renderData.id === id) {
-            renderData.state = OVERLAY_TOGGLE_STATE.CLOSE;
-          }
-          return renderData;
-        }),
-      );
-    },
-  });
-
-  const overlayOpen = (option: OverlayOpenOption<T, R>) => {
-    const id = (() => `overlay:${Date.now()}`)();
-
-    const proxyClose: OverlayCloseType<R> = new Proxy(
-      option.close ?? emptyFunc,
-      closeHandler(id, !option.close),
-    );
-    const renderData: ContentRenderData<T> = {
-      ...option,
-      id,
-      state: OVERLAY_TOGGLE_STATE.OPEN,
-      close: proxyClose,
-      data: option.data as T,
-    };
-
-    setOverlays((prev) => {
-      return [...prev, renderData];
-    });
-    return id;
-  };
-
-  const closeAllOverlay: VoidFunction = () => {
-    setOverlays([]);
-  };
-
-  function OverlayProvider({ children }: { children: ReactNode }) {
-    return (
-      <OverlayManagerContext.Provider value={{ overlayOpen, closeAllOverlay }}>
-        {children}
-      </OverlayManagerContext.Provider>
-    );
-  }
-  return { overlays, OverlayProvider } as const;
-}
-
-/**
- * modal close callback 이 stateful 하게 동작하도록 하는 hook
- * @param content
- * @param closeFn
- * @example
- * 기본 사용
- * const [openSomeModal] = useOverlayStateful(SomeModalContent, closeCallback);
- *
- * curring 으로 사용하기
- * const useHolidayModal = (close: OverlayCloseType) => {
- *   return useOverlayStateful(SomeModalContent, close);
- * };
- * export const InterviewModals = {
- *   useHolidayModal,
- * } as const;
- * @experimental
- */
-function useOverlayStateful<DATA = any, RESULT = any>(
-  content: OverlayContentComponent<DATA>,
-  closeFn?: OverlayCloseType<RESULT>,
+function createCloseFunction<TResult>(
+  id: OverlayId,
+  options?: { close?: (result?: TResult) => void | Promise<void> },
 ) {
-  const { overlayOpen } = useContext(OverlayManagerContext);
-  const [id, setId] = useState<string | undefined>();
+  const closeSignal = computed(() => {
+    return async (result?: TResult) => {
+      const overlay = overlaysSignal.value.get(id);
+      if (!overlay) return;
 
-  useEvent(OVERLAY_CLOSE_EVENT_NAME, (event) => {
-    if (id) {
-      const { targetId, args } = (event as CustomEvent).detail;
-      if (targetId === id) closeFn?.(...args);
-    }
+      dispatchOverlayEvent(OVERLAY_EVENTS.BEFORE_CLOSE, {
+        overlayId: id,
+        args: result ? [result] : [],
+      });
+
+      if (options?.close) {
+        await options.close(result);
+      }
+
+      overlaysSignal.value = new Map(overlaysSignal.value).set(id, {
+        ...overlay,
+        state: false,
+      });
+
+      dispatchOverlayEvent(OVERLAY_EVENTS.CLOSE, {
+        overlayId: id,
+        args: result ? [result] : [],
+      });
+    };
   });
 
-  function openModal(data?: DATA) {
-    setId(overlayOpen({ content, data, kind: 'modal' }));
-  }
-
-  return [openModal] as const;
+  return closeSignal;
 }
 
-export {
-  useOverlayRegister,
-  useOverlayStateful,
-  OverlayManagerContext,
-  useOverlayManager,
+export const useOverlay = () => {
+  const open = useCallback(
+    <TData = unknown, TResult = unknown>(
+      options: OverlayOpenOptions<TData, TResult>,
+    ): OverlayId => {
+      const id = nanoid();
+      const closeFn = createCloseFunction<TResult>(id, options);
+
+      const proxyData = new Proxy((options.data as object) ?? {}, {
+        get(target, prop) {
+          if (prop === 'close') {
+            return closeFn.value;
+          }
+          return Reflect.get(target, prop);
+        },
+      });
+
+      const overlayData: OverlayRenderData<TData, TResult> = {
+        id,
+        state: true,
+        content: options.content,
+        position: options.position ?? defaultPosition,
+        kind: options.kind ?? defaultKind,
+        overlayHidden: options.overlayHidden ?? false,
+        title: options.title ?? null,
+        width: options.width,
+        height: options.height,
+        style: options.style,
+        className: options.className,
+        data: proxyData as TData,
+        close: closeFn.value,
+      };
+
+      overlaysSignal.value = new Map(overlaysSignal.value);
+      overlaysSignal.value.set(id, overlayData);
+      return id;
+    },
+    [],
+  );
+
+  const close = useCallback(
+    <TResult = void,>(id: OverlayId, result?: TResult): void => {
+      const overlay = overlaysSignal.value.get(id);
+      if (overlay) {
+        overlay.close?.(result as void);
+      }
+    },
+    [],
+  );
+
+  const closeAll = useCallback((): void => {
+    overlaysSignal.value = new Map();
+  }, []);
+
+  return {
+    open,
+    close,
+    closeAll,
+    overlays: activeOverlays,
+  };
+};
+
+interface OverlayContainerProps {
+  className?: string;
+  style?: CSSProperties;
+}
+
+export const OverlayContainer: FC<OverlayContainerProps> = ({
+  className,
+  style,
+}) => {
+  const { overlays } = useOverlay();
+
+  return (
+    <div className={className} style={style}>
+      {overlays.value.map((overlay) => {
+        const Content = overlay.content;
+        return (
+          <div
+            className={`overlay-container ${overlay.position} ${overlay.kind} ${overlay.className ?? ''}`}
+            key={overlay.id}
+            style={{
+              ...overlay.style,
+              width: overlay.width,
+              height: overlay.height,
+            }}
+          >
+            {overlay.title ? (
+              <div className="overlay-title">{overlay.title}</div>
+            ) : null}
+            <Content
+              close={overlay.close as (result?: any) => void}
+              data={overlay.data}
+              id={overlay.id}
+              open={overlay.state}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
 };

@@ -48,6 +48,8 @@
   },
   "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
+    "@preact/signals-react": "2.2.0",
+    "nanoid": "^5.0.9",
     "react-use": "^17.5.0"
   },
   "devDependencies": {

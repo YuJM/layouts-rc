@@ -1,79 +1,59 @@
 import type { CSSProperties, FC, ReactNode } from 'react';
+import type { OVERLAY_POSITION } from './constants';
 
-export type UnionToDiscriminatedType<T extends Record<string, any>> =
-  T[keyof T];
+export type OverlayId = string;
+export type OverlayState = boolean;
 
-type OverlayId = string;
+export type OverlayPosition =
+  (typeof OVERLAY_POSITION)[keyof typeof OVERLAY_POSITION];
 
-export type OverlayCloseType<R = any> = (data?: R) => void;
+export type OverlayKind = 'overlay' | 'sheet' | 'modal' | 'confirm';
 
-export const OVERLAY_TOGGLE_STATE = {
-  OPEN: true,
-  CLOSE: false,
-} as const;
-
-export type OverlayToggleState = UnionToDiscriminatedType<
-  typeof OVERLAY_TOGGLE_STATE
->;
-
-export const OverlayPosition = {
-  top: 'top',
-  bottom: 'bottom',
-  left: 'left',
-  right: 'right',
-} as const;
-
-export type OverlayPositionType = UnionToDiscriminatedType<
-  typeof OverlayPosition
->;
-
-export interface OverlayContentProps<T = any, R = any> {
-  id?: OverlayId;
-  open: boolean;
-  data: T;
-  close: OverlayCloseType<R>;
-}
-
-/**
- * option에서 data값을 주지 않는다면 component에서 data는 null이다.
- */
-export type OverlayContentComponent<T = any, R = any> = FC<
-  OverlayContentProps<T, R>
->;
-
-export interface OverlayOpenOption<T = any, R = any> {
-  title?: ReactNode;
-  content: OverlayContentComponent<T, R>;
-  data?: T;
-  close?: OverlayCloseType<R>;
-  /*style*/
+export interface OverlayStyle {
   width?: CSSProperties['width'];
   height?: CSSProperties['height'];
   style?: CSSProperties;
   className?: string;
-  position?: OverlayPositionType;
-  overlayHidden?: boolean; // default off
-  kind?: 'overlay' | 'sheet' | 'modal' | 'confirm';
-  [key: string]: any;
 }
 
-export interface ContentRenderData<T = any, R = any>
-  extends OverlayOpenOption<T, R> {
+export interface OverlayConfig {
+  title?: ReactNode;
+  position?: OverlayPosition;
+  overlayHidden?: boolean;
+  kind?: OverlayKind;
+}
+
+export type OverlayCloseType<TResult = void> = (
+  result?: TResult,
+) => void | Promise<void>;
+
+export interface OverlayContentProps<TData = unknown, TResult = void> {
   id: OverlayId;
-  state: OverlayToggleState;
-  data: T; // override
-  close: OverlayCloseType<R>;
+  open: boolean;
+  data: TData;
+  close: OverlayCloseType<TResult>;
 }
 
-export interface OverlayContextOption<T = any, R = any> {
-  overlayOpen: (option: OverlayOpenOption<T, R>) => OverlayId;
-  closeAllOverlay: VoidFunction;
+export type OverlayContentComponent<TData = unknown, TResult = void> = FC<
+  OverlayContentProps<TData, TResult>
+>;
+
+export interface OverlayOpenOptions<TData = unknown, TResult = void>
+  extends OverlayStyle,
+    OverlayConfig {
+  content: OverlayContentComponent<TData, TResult>;
+  data?: TData;
+  close?: OverlayCloseType<TResult>;
 }
 
-/*close Event*/
-export const OVERLAY_CLOSE_EVENT_NAME = 'dialog-close';
+export interface OverlayRenderData<TData = unknown, TResult = void>
+  extends Omit<OverlayOpenOptions<TData, TResult>, 'data'> {
+  id: OverlayId;
+  state: OverlayState;
+  data: TData;
+}
 
-export interface CloseEventDetail {
-  targetId: string;
-  args: any[];
+export interface CloseEventDetail<TResult = unknown> {
+  overlayId: OverlayId;
+  args: TResult[];
 }
