@@ -9,4 +9,6 @@ export type {
 
 export { OVERLAY_EVENTS, OVERLAY_POSITION } from './constants.ts';
 
-export { useOverlay, OverlayContainer } from './overlay-manager';
+// export { useOverlay, OverlayContainer } from './overlay-manager';
+
+export * from './new.tsx';
