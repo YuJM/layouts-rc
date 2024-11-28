@@ -1,17 +1,23 @@
 'use client';
 
-import { useOverlayManager } from 'overlay-manager-rc/dist';
+import { useOverlayManager } from 'overlay-manager-rc';
+import { useEffect } from 'react';
 import { TestContent } from '@/overlays/test-content.tsx';
 import { Button } from '@components/ui/button.tsx';
 
 export function AlertSection() {
-  const { overlayOpen } = useOverlayManager();
+  const { openOverlay } = useOverlayManager();
   const handleOpenAlert = () => {
-    overlayOpen({
+    openOverlay({
       content: TestContent,
       data: 'hello!!!!',
     });
   };
+
+  useEffect(() => {
+    console.log('render');
+  }, []);
+
   return (
     <section className="md:h-screen">
       <div className="flex flex-col gap-10">

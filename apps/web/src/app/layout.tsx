@@ -25,7 +25,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           fontSans.variable,
         )}
       >
-        <OverlayManagerProvider>{children}</OverlayManagerProvider>
+        {children}
+        <OverlayManagerProvider />
       </body>
     </html>
   );
