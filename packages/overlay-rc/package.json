@@ -1,6 +1,6 @@
 {
   "name": "overlay-manager-rc",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "React overlay component manager",
   "keywords": [
     "front-end",
@@ -48,7 +48,8 @@
   },
   "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
-    "react-use": "^17.5.0"
+    "@preact/signals-react": "2.2.0",
+    "nanoid": "^5.0.9"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

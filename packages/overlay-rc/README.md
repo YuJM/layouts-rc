@@ -43,97 +43,34 @@ already install
 
 ### Step1
 
-make file `OverlayManagerProvider.tsx`;
+make file `overlay-manager-provider.tsx`;
 
 ```typescript jsx
 'use client';
 
-import { useOverlayRegister } from 'overlay-manager-rc';
 import type { ReactNode } from 'react';
+import { OverlayContainer } from "overlay-manager-rc";
 
-export function OverlayManagerProvider({ children }: { children: ReactNode }) {
-  const { OverlayProvider, overlays } = useOverlayRegister();
-
-    return (
-        <OverlayProvider>
-            {children}
-             {/* ---step2 ---*/}
-        </OverlayProvider>
-    );
+export function OverlayManagerProvider({ children }: { children?: ReactNode }) {
+  return <OverlayContainer>{children}</OverlayContainer>;
 }
-
 ```
 
 ### Step2
 
-```typescript jsx
-   {overlays.map((contentRender) => {
-                const { close, content: ContentComponent, data } = contentRender;
-
-                if (typeof ContentComponent !== 'function') {
-                    return null;
-                }
-               /*----case 1----*/
-  
-                return <ContentComponent
-                        close={contentRender.close}
-                        data={contentRender.data}
-                        id={contentRender.id}
-                        key={contentRender.id}
-                        open={contentRender.state}
-                />
-                
-               /*----case 2----*/
-
-/*
-                return (
-                    <AlertDialog
-                        key={contentRender.id}
-                        onOpenChange={(v) => {
-                            !v && close();
-                        }}
-                        open={contentRender.state}
-                    >
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>{contentRender.title}</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    <ContentComponent
-                                      close={contentRender.close}
-                                      data={contentRender.data}
-                                      id={contentRender.id}
-                                      open={contentRender.state}
-                                    />
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction>Continue</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                );
-*/
-
-               
-            })}
-```
-
-### Step3
-
-set provider in `Rootlayout`component
+set provider in `layout.tsx` component
 
 ```typescript jsx
-  export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-          <html lang="en" suppressHydrationWarning>
-            <body className={'min-h-screen font-sans antialiased dark'}>
-                <OverlayManagerProvider>{children}</OverlayManagerProvider>
-            </body>
-          </html>
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn('min-h-screen font-sans antialiased dark')}>
+        {children}
+        <OverlayManagerProvider />
+      </body>
+    </html>
   );
 }
-
 ```
 
 ## Usage
@@ -143,40 +80,31 @@ set provider in `Rootlayout`component
 ```typescript jsx
 import type { OverlayContentProps } from 'overlay-manager-rc';
 
-export function OverlayContentComponent({ data, close, open }: OverlayContentProps<string>) {
-  /*----*case1-----*/
-    return (<AlertDialog
-                    open={open}
-                    onOpenChange={(v) => {
-                      !v && close();
-                    }}
-            >
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Alert title</AlertDialogTitle>
-                  <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction>Continue</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-    );
-    
-    /*----*case2-----*/
-   /*
-    return (<div>Get Data: {data}</div>)
-    */
+export function TestContent({
+  open,
+  data,
+  close,
+}: OverlayContentProps<string>) {
+  return (
+    <AlertDialog
+      onOpenChange={(v) => {
+        !v && close();
+      }}
+      open={open}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Alert title</AlertDialogTitle>
+          <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }
-```
-you can arrow function component
-```typescript jsx
-import type { OverlayContentComponent } from 'overlay-manager-rc';
-
-export const OverlayContentComponent:OverlayContentComponent<string> = ({ data, close })  => {
-  /* ----------------------- */
-} 
 ```
 
 ### Open overlay
@@ -186,84 +114,85 @@ export const OverlayContentComponent:OverlayContentComponent<string> = ({ data, 
 
 import { useOverlayManager } from 'overlay-manager-rc';
 
-export function OverlaySection() {
-  const { overlayOpen } = useOverlayManager();
-
-
+export function AlertSection() {
+  const { openOverlay } = useOverlayManager();
+  
   const handleOpenAlert = () => {
-    overlayOpen({
-      content: OverlayContentComponent,
-      data: 'Input Data',
-      close: () => {
-          // close logic
-      }
+    openOverlay({
+      content: TestContent,
+      data: 'hello!!!!'
     });
   };
+
   return (
-          <section className="md:h-screen">
-            <div className="flex flex-col gap-10">
-              <Button onClick={handleOpenAlert}>
-                show alert
-              </Button>
-            </div>
-          </section>
+    <section className="md:h-screen">
+      <div className="flex flex-col gap-10">
+        <Button onClick={handleOpenAlert}>
+          show alert
+        </Button>
+      </div>
+    </section>
   );
 }
 ```
+
 #### Receive resulting data when closing
 
 ```typescript jsx
-export function OverlayContentComponent({data, close}: OverlayContentProps<string, boolean>) {
-
-  return (<div>Get Data: {data}
-    <button onClick={() => {close(false);}}>close</button>
-  </div>)
+export function TestContent({data, close}: OverlayContentProps<string, boolean>) {
+  return (
+    <AlertDialog>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Alert title</AlertDialogTitle>
+          <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={() => close(false)}>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={() => close(true)}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }
 
-/* open handler*/
+/* open handler */
 const handleOpenAlert = () => {
-  overlayOpen({
-    content: OverlayContentComponent,
-    data: 'Input Data',
-    close: (result) => {
-      console.log(result);
+  openOverlay({
+    content: TestContent,
+    data: 'hello!!!!',
+    onClose: (result) => {
+      console.log('Dialog closed with result:', result);
     }
   });
-}
+};
 ```
+
 ## API
 ### useOverlayManager
 **returns**
 
 | name            | description                   | parameter         |
 |-----------------|-------------------------------|-------------------|
-| overlayOpen     | open overlay component        | OverlayOpenOption |
-| closeAllOverlay | close all overlay component   | -                 |
+| openOverlay     | open overlay component        | OverlayOptions    |
+| closeAllOverlays| close all overlay components  | -                 |
 
-#### OverlayOpenOption
+#### OverlayOptions<TData, TResult>
 
 | Prop           | Type                                         | Default | Required   |
 |----------------|----------------------------------------------|---------|------------|
-| content        | OverlayContentComponent<T, R>                | -       | Yes        |
-| data           | T                                            | -       |            |
-| close          | OverlayCloseType<R>                          | -       |            |
-| title          | ReactNode                                    | -       |            |
-| width          | CSSProperties['width']                       | -       |            |
-| height         | CSSProperties['height']                      | -       |            |
-| style          | CSSProperties                                | -       |            |
-| className      | string                                       | -       |            |
-| position       | OverlayPositionType                          | -       |            |
-| overlayHidden  | boolean                                      | false   |            |
-| kind           | 'overlay' \| 'sheet' \| 'modal' \| 'confirm' | -       |            |
+| id             | string                                       | -       | No         |
+| content        | OverlayContent<TData, TResult>               | -       | Yes        |
+| data           | TData                                        | -       | No         |
+| onClose        | (result?: TResult) => void                   | -       | No         |
 
-#### OverlayContentProps<T, R>
+#### OverlayContentProps<TData, TResult>
 
-| Prop  | Type                 | Default | Required |
-| ----- | -------------------- | ------- |----------|
-| data  | T                    | -       | Yes      |
-| close | OverlayCloseType<R>  | -       | Yes      |
-| id    | OverlayId            | -       | -        |
-| open  | boolean              | -       | Yes      |
+| Prop  | Type                                | Default | Required |
+| ----- | ----------------------------------- | ------- |----------|
+| data  | TData                               | -       | Yes      |
+| close | (result?: TResult) => void          | -       | Yes      |
+| open  | boolean                             | -       | Yes      |
 
 
 

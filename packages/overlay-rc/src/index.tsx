@@ -1,12 +1,13 @@
+// export { useOverlay, OverlayContainer } from './overlay-manager';
+
+export * from './use-overlay-manager.tsx';
+
 export type {
   OverlayContentProps,
-  OverlayContentComponent,
-  OverlayCloseType,
+  OverlayContent,
+  OverlayData,
+  OverlayId,
+  OverlayKind,
+  OverlayOptions,
+  OverlayPosition,
 } from './types.ts';
-
-export {
-  OverlayManagerContext,
-  useOverlayRegister,
-  useOverlayManager,
-  useOverlayStateful,
-} from './overlay-manager.tsx';
