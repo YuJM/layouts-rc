@@ -1,5 +1,11 @@
 # overlay-manager-rc
 
+## 0.7.0
+
+### Minor Changes
+
+- update(overlay): id 기능 추가
+
 ## 0.6.0
 
 ### Minor Changes
