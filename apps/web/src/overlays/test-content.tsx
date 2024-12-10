@@ -14,11 +14,11 @@ export function TestContent({
   open,
   data,
   close,
-}: OverlayContentProps<string>) {
+}: OverlayContentProps<string, boolean>) {
   return (
     <AlertDialog
       onOpenChange={(v) => {
-        !v && close();
+        !v && close(true);
       }}
       open={open}
     >

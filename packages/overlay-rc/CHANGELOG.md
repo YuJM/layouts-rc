@@ -1,5 +1,11 @@
 # overlay-manager-rc
 
+## 0.7.1
+
+### Patch Changes
+
+- fix: onClose bugFix
+
 ## 0.7.0
 
 ### Minor Changes
