@@ -13,6 +13,7 @@ Inspired by [angular cdk overlay](https://material.angular.io/cdk/overlay/overvi
 - **Prevent closing with beforeClose logic.** **Asynchronous result handling with await.**
 - **Simplified API with automatic ID management.**
 - **No unnecessary renders when opening or closing overlay components.**
+- **React 19 support**
 
 ## Install
 
