@@ -1,15 +1,11 @@
-import { computed, signal } from '@preact/signals-react';
-import { nanoid } from 'nanoid';
-import type { OverlayData, OverlayOptions } from './types.ts';
-import { awaitIfPromise } from './awaitIfPromise';
+import {signal} from '@preact/signals-react';
+import {nanoid} from 'nanoid';
+import type {OverlayData, OverlayOptions} from './types.ts';
+import {awaitIfPromise} from './awaitIfPromise';
 
 // 전역 Overlay 상태 관리
 export const overlays = signal<Array<OverlayData<any, any>>>([]);
 
-// 활성화된 Overlay 계산
-const activeOverlays = computed(() =>
-  overlays.value.filter((overlay) => overlay.open),
-);
 
 // Overlay 훅
 export const useOverlayManager = () => {
@@ -19,7 +15,13 @@ export const useOverlayManager = () => {
   const closeOverlay = (
     id: string
   ) => {
-    overlays.value = overlays.value.filter((overlay) => overlay.id !== id);
+    overlays.value = overlays.value.map((overlay) => {
+      if(id === overlay.id) {
+        overlay.open = false;
+        return overlay;
+      }
+      return overlay;
+    });
   };
 
   // Overlay 열기 함수
@@ -104,6 +106,6 @@ export const useOverlayManager = () => {
     openOverlay,
     closeAllOverlays,
     closeOverlayById,
-    overlays: activeOverlays,
+    overlays,
   };
 };
