@@ -1,5 +1,11 @@
 # overlay-manager-rc
 
+## 0.8.0
+
+### Minor Changes
+
+- fix and react 19 available
+
 ## 0.7.5
 
 ### Patch Changes
