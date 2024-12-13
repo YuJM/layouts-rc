@@ -1,6 +1,6 @@
 {
   "name": "overlay-manager-rc",
-  "version": "0.7.1",
+  "version": "0.7.5",
   "description": "React overlay component manager",
   "keywords": [
     "front-end",
@@ -61,6 +61,7 @@
     "typescript": "^5.3.3"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "^18",
+    "react-dom": "^18"
   }
 }

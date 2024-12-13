@@ -1,5 +1,11 @@
 # overlay-manager-rc
 
+## 0.7.5
+
+### Patch Changes
+
+- fix package.json
+
 ## 0.7.1
 
 ### Patch Changes
