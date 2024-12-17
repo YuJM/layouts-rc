@@ -1,5 +1,11 @@
 # overlay-manager-rc
 
+## 0.8.2
+
+### Patch Changes
+
+- add ko document
+
 ## 0.8.1
 
 ### Patch Changes

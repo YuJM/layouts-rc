@@ -1,5 +1,7 @@
 # Overlay-manager-rc
 
+English | [한국어](./README.ko.md)
+
 Inspired by [angular cdk overlay](https://material.angular.io/cdk/overlay/overview)
 
 > React overlay component manager
@@ -42,8 +44,6 @@ ex) nextjs(app router) + shadcn-ui(radix-ui)
 already install
 
 - alert-dialog
-- dialog
-- sheet
 
 ### Step1
 
@@ -130,7 +130,7 @@ export function AlertSection() {
   const { openOverlay } = useOverlayManager();
   
   const handleOpenAlert = async () => {
-    const result = await openOverlay({ // await 추가
+    const result = await openOverlay({ 
       content: TestContent,
       data: 'hello!!!!',
       onClose: (result) => {
@@ -140,7 +140,7 @@ export function AlertSection() {
         console.log('Overlay opened with id:', id);
       },
     });
-    console.log('Result from openOverlay:', result); // 결과값 출력
+    console.log('Result from openOverlay:', result); // Same value as onClose result
   };
 
   return (
