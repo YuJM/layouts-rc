@@ -1,5 +1,11 @@
 # overlay-manager-rc
 
+## 0.8.4
+
+### Patch Changes
+
+- fix document
+
 ## 0.8.3
 
 ### Patch Changes

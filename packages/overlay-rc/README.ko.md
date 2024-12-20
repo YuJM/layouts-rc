@@ -168,7 +168,7 @@ export function AlertSection() {
     await openOverlay({ 
       id: 'custom-alert',
       content: TestContent,
-      data: 'old alert!',
+      data: 'first alert!',
     });
   };
 
@@ -177,7 +177,7 @@ export function AlertSection() {
     await openOverlay({ 
       id: 'custom-alert',
       content: TestContent,
-      data: 'new alert!',
+      data: 'second alert!',
     });
   };
 
