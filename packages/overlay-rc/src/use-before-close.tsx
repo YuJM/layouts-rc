@@ -1,6 +1,12 @@
 import { useEffect } from 'react';
 import { overlays } from './use-overlay-manager';
 
+/**
+ * When the manager tries to run an overlay with the same id
+ * Function that executes before closing the overlay
+ * @param beforeClose  
+ * @param id 
+ */
 export const useBeforeClose = (
     beforeClose: () => Promise<boolean> | boolean,
     id: string,

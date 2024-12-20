@@ -91,11 +91,6 @@ export function TestContent({
   close,
   id // add id prop
 }: OverlayContentProps<string>) {
-  // Example of using useBeforeClose hook
-  useBeforeClose(async () => {
-    const confirmed = window.confirm('Are you sure you want to close?');
-    return confirmed; // returns true to close, false to prevent closing
-  }, id); // pass id to useBeforeClose
 
   return (
     <AlertDialog
@@ -154,38 +149,48 @@ export function AlertSection() {
   );
 }
 ```
+### Manual ID Management
 
-#### Receive resulting data when closing
+When you specify a manual ID and an overlay with the same ID is already open, the existing overlay will automatically close before opening the new one.
 
 ```typescript jsx
-export function TestContent({data, close}: OverlayContentProps<string, boolean>) {
+'use client';
+
+import { useOverlayManager } from 'overlay-manager-rc';
+
+export function AlertSection() {
+  const { openOverlay } = useOverlayManager();
+  
+  const handleOpenAlert = async () => {
+    // This will close any existing overlay with ID 'custom-alert' 
+    // before opening the new one
+    await openOverlay({ 
+      id: 'custom-alert',
+      content: TestContent,
+      data: 'old alert!',
+    });
+  };
+
+  const handleOpenAnotherAlert = async () => {
+    // If 'custom-alert' is already open, it will close first
+    await openOverlay({ 
+      id: 'custom-alert',
+      content: TestContent,
+      data: 'new alert!',
+    });
+  };
+
   return (
-    <AlertDialog>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Alert title</AlertDialogTitle>
-          <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => close(false)}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => close(true)}>Continue</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <section className="md:h-screen">
+      <div className="flex flex-col gap-10">
+        <Button onClick={handleOpenAlert}>First Alert</Button>
+        <Button onClick={handleOpenAnotherAlert}>Second Alert</Button>
+      </div>
+    </section>
   );
 }
-
-/* open handler */
-const handleOpenAlert = () => {
-  openOverlay({
-    content: TestContent,
-    data: 'hello!!!!',
-    onClose: (result) => {
-      console.log('Dialog closed with result:', result);
-    }
-  });
-};
 ```
+
 
 ## API
 
@@ -220,6 +225,10 @@ const handleOpenAlert = () => {
 | id | string | - | Yes |
 
 #### useBeforeClose
+
+When the manager tries to run an overlay with the same id
+function that executes before closing the overlay
+
 
 ```typescript jsx
 import { useBeforeClose } from 'overlay-manager-rc/useBeforeClose';

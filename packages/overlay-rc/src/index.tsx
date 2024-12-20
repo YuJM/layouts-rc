@@ -12,4 +12,4 @@ export type {
   OverlayPosition,
 } from './types.ts';
 export {OverlayContainer} from "./overlay-container.tsx";
-export {useBeforeClose} from "./useBeforeClose.tsx";
+export {useBeforeClose} from "./use-before-close.tsx";

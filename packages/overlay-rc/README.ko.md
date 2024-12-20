@@ -4,17 +4,17 @@
 
 [angular cdk overlay](https://material.angular.io/cdk/overlay/overview)에서 영감을 받았습니다.
 
-> React 오버레이 컴포넌트 매니저
+> React 오버레이 컴포넌트 관리자
 
 ## 특징
 
-- (alert-dialog, dialog, sheet...) 열기, 닫기 상태 **관리가 더 이상 필요 없습니다**.
+- (alert-dialog, dialog, sheet 등) 열기, 닫기 상태 **더 이상 관리할 필요 없음**.
 - **오버레이 컴포넌트 선언에 대해 걱정할 필요가 없습니다**. 여러 개의 오버레이가 있어도 괜찮습니다.
 - 오버레이 컴포넌트 props로 데이터 전달.
-- 오버레이 컴포넌트가 닫힐 때 감지; 닫힐 때 결과 데이터를 받을 수 있습니다.
+- 오버레이 컴포넌트가 닫힐 때 감지; 닫힐 때 결과 데이터를 받습니다.
 - **beforeClose 로직으로 닫기 방지.** **await를 통한 비동기 결과 처리.**
 - **자동 ID 관리로 단순화된 API.**
-- **오버레이 컴포넌트 열기 또는 닫을 때 불필요한 렌더링이 없습니다.**
+- **오버레이 컴포넌트 열기 또는 닫을 때 불필요한 렌더링 없음.**
 - **React 19 지원**
 
 ## 설치
@@ -41,10 +41,9 @@ pnpm add overlay-manager-rc
 
 예시) nextjs(app router) + shadcn-ui(radix-ui)
 
-사전 설치된 것 
+이미 설치되어 있어야 함
 
 - alert-dialog
-
 
 ### Step1
 
@@ -92,11 +91,6 @@ export function TestContent({
   close,
   id // id prop 추가
 }: OverlayContentProps<string>) {
-  // useBeforeClose 훅 사용 예시
-  useBeforeClose(async () => {
-    const confirmed = window.confirm('정말 닫으시겠습니까?');
-    return confirmed; // true를 반환하면 닫기, false를 반환하면 닫기 방지
-  }, id); // useBeforeClose에 id 전달
 
   return (
     <AlertDialog
@@ -107,12 +101,12 @@ export function TestContent({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>알림 제목</AlertDialogTitle>
-          <AlertDialogDescription>받은 데이터: {data}</AlertDialogDescription>
+          <AlertDialogTitle>Alert title</AlertDialogTitle>
+          <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
-          <AlertDialogAction>계속</AlertDialogAction>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -133,22 +127,22 @@ export function AlertSection() {
   const handleOpenAlert = async () => {
     const result = await openOverlay({ 
       content: TestContent,
-      data: '안녕하세요!!!!',
+      data: 'hello!!!!',
       onClose: (result) => {
-        console.log('다이얼로그가 닫혔습니다. 결과:', result);
+        console.log('Dialog closed with result:', result);
       },
       onOpen: (id) => {
-        console.log('오버레이가 열렸습니다. ID:', id);
+        console.log('Overlay opened with id:', id);
       },
     });
-    console.log('openOverlay 결과:', result); // onClose 결과와 동일한 값
+    console.log('Result from openOverlay:', result); // onClose result와 동일한 값
   };
 
   return (
     <section className="md:h-screen">
       <div className="flex flex-col gap-10">
         <Button onClick={handleOpenAlert}>
-          알림 보기
+          show alert
         </Button>
       </div>
     </section>
@@ -156,36 +150,46 @@ export function AlertSection() {
 }
 ```
 
-#### 닫을 때 결과 데이터 받기
+### 수동 ID 관리
+
+수동 ID를 지정하고 동일한 ID를 가진 오버레이가 이미 열려있는 경우, 새 오버레이를 열기 전에 기존 오버레이가 자동으로 닫힙니다.
 
 ```typescript jsx
-export function TestContent({data, close}: OverlayContentProps<string, boolean>) {
+'use client';
+
+import { useOverlayManager } from 'overlay-manager-rc';
+
+export function AlertSection() {
+  const { openOverlay } = useOverlayManager();
+  
+  const handleOpenAlert = async () => {
+    // ID가 'custom-alert'인 기존 오버레이를 닫고 
+    // 새로운 오버레이를 엽니다
+    await openOverlay({ 
+      id: 'custom-alert',
+      content: TestContent,
+      data: 'old alert!',
+    });
+  };
+
+  const handleOpenAnotherAlert = async () => {
+    // 'custom-alert'가 이미 열려있다면 먼저 닫힙니다
+    await openOverlay({ 
+      id: 'custom-alert',
+      content: TestContent,
+      data: 'new alert!',
+    });
+  };
+
   return (
-    <AlertDialog>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>알림 제목</AlertDialogTitle>
-          <AlertDialogDescription>받은 데이터: {data}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => close(false)}>취소</AlertDialogCancel>
-          <AlertDialogAction onClick={() => close(true)}>계속</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <section className="md:h-screen">
+      <div className="flex flex-col gap-10">
+        <Button onClick={handleOpenAlert}>First Alert</Button>
+        <Button onClick={handleOpenAnotherAlert}>Second Alert</Button>
+      </div>
+    </section>
   );
 }
-
-/* 열기 핸들러 */
-const handleOpenAlert = () => {
-  openOverlay({
-    content: TestContent,
-    data: '안녕하세요!!!!',
-    onClose: (result) => {
-      console.log('다이얼로그가 닫혔습니다. 결과:', result);
-    }
-  });
-};
 ```
 
 ## API
@@ -222,13 +226,16 @@ const handleOpenAlert = () => {
 
 #### useBeforeClose
 
+매니저가 동일한 id를 가진 오버레이를 실행하려고 할 때
+오버레이를 닫기 전에 실행되는 함수
+
 ```typescript jsx
 import { useBeforeClose } from 'overlay-manager-rc/useBeforeClose';
 
-// ... 오버레이 컴포넌트 내부
+// ... 오버레이 컴포넌트 내부에서
 useBeforeClose(async () => {
   // 닫기를 방지할지 결정하는 로직.
-  // 예를 들어, 폼이 수정되었는지 확인.
-  const canClose = window.confirm('정말 닫으시겠습니까?');
+  // 예를 들어, 폼이 더티 상태인지 확인.
+  const canClose = window.confirm('정말로 닫으시겠습니까?');
   return canClose; // true를 반환하면 닫기 허용, false를 반환하면 방지
 }, id); // 오버레이의 ID 전달

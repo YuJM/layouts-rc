@@ -51,7 +51,6 @@ export const useOverlayManager = () => {
           // 기존 오버레이를 닫고 Promise resolve
           closeOverlay(id);
           void existingOverlay.onClose?.(undefined);
-          resolve(undefined); // Promise를 undefined로 resolve
         }
         return true;
       };
