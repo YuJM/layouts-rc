@@ -1,26 +1,23 @@
-import {signal} from '@preact/signals-react';
-import {nanoid} from 'nanoid';
-import type {OverlayData, OverlayOptions} from './types.ts';
-import {awaitIfPromise} from './awaitIfPromise';
+import { signal } from '@preact/signals-react';
+import { nanoid } from 'nanoid';
+import type { OverlayData, OverlayOptions } from './types.ts';
+import { awaitIfPromise } from './awaitIfPromise';
 
 // 전역 Overlay 상태 관리
 export const overlays = signal<Array<OverlayData<any, any>>>([]);
-
 
 // Overlay 훅
 export const useOverlayManager = () => {
   /* Overlay 닫기 처리 함수
   여기 함수에서는 option이 push 되지 않았기 때문에 
   */
-  const closeOverlay = (
-    id: string
-  ) => {
+  const closeOverlay = (id: string) => {
     overlays.value = overlays.value.map((overlay) => {
-      if(id === overlay.id) {
+      if (id === overlay.id) {
         return {
           ...overlay,
           open: false,
-          closeTimestamp: Date.now()
+          closeTimestamp: Date.now(),
         };
       }
       return overlay;
@@ -109,5 +106,5 @@ export const useOverlayManager = () => {
     closeAllOverlays,
     closeOverlayById,
     overlays,
-  };
+  } as const;
 };

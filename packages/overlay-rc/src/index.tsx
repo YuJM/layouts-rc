@@ -1,5 +1,3 @@
-// export { useOverlay, OverlayContainer } from './overlay-manager';
-
 export * from './use-overlay-manager.tsx';
 
 export type {
@@ -11,5 +9,5 @@ export type {
   OverlayOptions,
   OverlayPosition,
 } from './types.ts';
-export {OverlayContainer} from "./overlay-container.tsx";
-export {useBeforeClose} from "./use-before-close.tsx";
+export { OverlayContainer } from './overlay-container.tsx';
+export { useBeforeClose } from './use-before-close.tsx';

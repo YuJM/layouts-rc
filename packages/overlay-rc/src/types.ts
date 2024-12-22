@@ -1,6 +1,5 @@
 import type { CSSProperties, FC } from 'react';
 
-
 // OverlayId, OverlayPosition, OverlayKind 타입 정의
 export type OverlayId = string;
 export type OverlayPosition = 'center' | 'top' | 'bottom' | 'left' | 'right';
@@ -16,7 +15,7 @@ export interface OverlayContentProps<TData = unknown, TResult = unknown> {
 
 // OverlayContent 타입 정의: Overlay 컴포넌트의 타입
 export type OverlayContent<TData = unknown, TResult = unknown> = FC<
-    OverlayContentProps<TData, TResult>
+  OverlayContentProps<TData, TResult>
 >;
 
 // OverlayOptions 타입 정의: openOverlay 함수에 전달되는 옵션
@@ -37,10 +36,9 @@ export interface OverlayOptions<TData = unknown, TResult = unknown> {
 
 // OverlayData 타입 정의: useOverlayManager에서 관리하는 Overlay 상태
 export interface OverlayData<TData = unknown, TResult = unknown>
-    extends OverlayOptions<TData, TResult> {
+  extends OverlayOptions<TData, TResult> {
   id: string; // Overlay ID (필수)
   open: boolean; // Overlay가 열려 있는지 여부
   beforeClose?: () => Promise<boolean> | boolean; // 닫기 전 확인 콜백 (선택적)
   closeTimestamp?: number; // 닫힌 시간을 기록하기 위한 필드 추가
 }
-
