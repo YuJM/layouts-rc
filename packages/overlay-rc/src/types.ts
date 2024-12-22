@@ -41,5 +41,6 @@ export interface OverlayData<TData = unknown, TResult = unknown>
   id: string; // Overlay ID (필수)
   open: boolean; // Overlay가 열려 있는지 여부
   beforeClose?: () => Promise<boolean> | boolean; // 닫기 전 확인 콜백 (선택적)
+  closeTimestamp?: number; // 닫힌 시간을 기록하기 위한 필드 추가
 }
 

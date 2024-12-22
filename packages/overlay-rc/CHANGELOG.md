@@ -1,5 +1,11 @@
 # overlay-manager-rc
 
+## 0.9.0
+
+### Minor Changes
+
+- add auto cleanup for closed overlays after 30 seconds
+
 ## 0.8.4
 
 ### Patch Changes

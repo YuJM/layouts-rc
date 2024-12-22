@@ -17,8 +17,11 @@ export const useOverlayManager = () => {
   ) => {
     overlays.value = overlays.value.map((overlay) => {
       if(id === overlay.id) {
-        overlay.open = false;
-        return overlay;
+        return {
+          ...overlay,
+          open: false,
+          closeTimestamp: Date.now()
+        };
       }
       return overlay;
     });

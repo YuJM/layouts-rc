@@ -1,5 +1,12 @@
 # web
 
+## 1.0.11
+
+### Patch Changes
+
+- Updated dependencies
+  - overlay-manager-rc@0.9.0
+
 ## 1.0.10
 
 ### Patch Changes
