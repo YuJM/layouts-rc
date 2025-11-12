@@ -6,6 +6,8 @@ Inspired by [angular cdk overlay](https://material.angular.io/cdk/overlay/overvi
 
 > React overlay component manager
 
+> **⚠️ Requirements**: React 18.0.0 or higher (uses `useSyncExternalStore`)
+
 ## Feature
 
 - (alert-dialog, dialog, sheet...) open, close state **no more management**.

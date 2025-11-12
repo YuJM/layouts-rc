@@ -6,6 +6,8 @@
 
 > React 오버레이 컴포넌트 관리자
 
+> **⚠️ 요구사항**: React 18.0.0 이상 (`useSyncExternalStore` 사용)
+
 ## 특징
 
 - (alert-dialog, dialog, sheet 등) 열기, 닫기 상태 **더 이상 관리할 필요 없음**.

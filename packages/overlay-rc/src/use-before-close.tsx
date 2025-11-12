@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { overlays } from './use-overlay-manager';
+import { overlayStore } from './overlay-store';
 
 /**
  * When the manager tries to run an overlay with the same id
@@ -16,9 +16,11 @@ export const useBeforeClose = (
     if (!id) return;
 
     // 해당 id를 가진 Overlay의 beforeClose를 설정
-    overlays.value = overlays.value.map((o) =>
+    const currentOverlays = overlayStore.getOverlays();
+    const updatedOverlays = currentOverlays.map((o) =>
       o.id === id ? { ...o, beforeClose } : o,
     );
+    overlayStore.setOverlays(updatedOverlays);
 
     // unmount시
     return () => {
@@ -26,9 +28,11 @@ export const useBeforeClose = (
       if (!id) return;
 
       // 해당 id를 가진 Overlay의 beforeClose를 제거
-      overlays.value = overlays.value.map((o) =>
+      const currentOverlays = overlayStore.getOverlays();
+      const updatedOverlays = currentOverlays.map((o) =>
         o.id === id ? { ...o, beforeClose: undefined } : o,
       );
+      overlayStore.setOverlays(updatedOverlays);
     };
   }, [beforeClose, id]);
 };

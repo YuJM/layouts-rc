@@ -1,6 +1,6 @@
 {
   "name": "overlay-manager-rc",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "React overlay component manager",
   "keywords": [
     "front-end",
@@ -49,7 +49,6 @@
   },
   "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
-    "@preact/signals-react": "2.2.0",
     "nanoid": "^5.0.9"
   },
   "devDependencies": {

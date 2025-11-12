@@ -1,18 +1,22 @@
-import { signal } from '@preact/signals-react';
+import { useSyncExternalStore } from 'react';
 import { nanoid } from 'nanoid';
 import type { OverlayData, OverlayOptions } from './types.ts';
 import { awaitIfPromise } from './awaitIfPromise';
-
-// 전역 Overlay 상태 관리
-export const overlays = signal<Array<OverlayData<any, any>>>([]);
+import { overlayStore } from './overlay-store';
 
 // Overlay 훅
 export const useOverlayManager = () => {
-  /* Overlay 닫기 처리 함수
-  여기 함수에서는 option이 push 되지 않았기 때문에 
-  */
+  // useSyncExternalStore로 overlay 상태 구독
+  const overlays = useSyncExternalStore(
+    overlayStore.subscribe,
+    overlayStore.getSnapshot,
+    overlayStore.getServerSnapshot,
+  );
+
+  /* Overlay 닫기 처리 함수 */
   const closeOverlay = (id: string) => {
-    overlays.value = overlays.value.map((overlay) => {
+    const currentOverlays = overlayStore.getOverlays();
+    const updatedOverlays = currentOverlays.map((overlay) => {
       if (id === overlay.id) {
         return {
           ...overlay,
@@ -22,6 +26,7 @@ export const useOverlayManager = () => {
       }
       return overlay;
     });
+    overlayStore.setOverlays(updatedOverlays);
   };
 
   // Overlay 열기 함수
@@ -33,12 +38,13 @@ export const useOverlayManager = () => {
 
       // 기존 Overlay 닫기 확인 (Promise 처리)
       const handleExistingOverlay = async () => {
-        const existingOverlayIndex = overlays.value.findIndex(
+        const currentOverlays = overlayStore.getOverlays();
+        const existingOverlayIndex = currentOverlays.findIndex(
           (o) => o.id === id,
         );
 
         if (existingOverlayIndex > -1) {
-          const existingOverlay = overlays.value[existingOverlayIndex];
+          const existingOverlay = currentOverlays[existingOverlayIndex];
           const canClose = await awaitIfPromise<boolean>(
             existingOverlay.beforeClose ? existingOverlay.beforeClose() : true,
           );
@@ -68,7 +74,8 @@ export const useOverlayManager = () => {
           },
         };
 
-        overlays.value = [...overlays.value, newOverlay];
+        const currentOverlays = overlayStore.getOverlays();
+        overlayStore.setOverlays([...currentOverlays, newOverlay]);
         void options.onOpen?.(id);
       };
 
@@ -81,11 +88,12 @@ export const useOverlayManager = () => {
   };
 
   // 모든 Overlay 닫기 함수
-  const closeAllOverlays = () => (overlays.value = []);
+  const closeAllOverlays = () => { overlayStore.setOverlays([]); };
 
   // ID로 Overlay 닫기 함수
   const closeOverlayById = async (id: string) => {
-    const overlay = overlays.value.find((o) => o.id === id);
+    const currentOverlays = overlayStore.getOverlays();
+    const overlay = currentOverlays.find((o) => o.id === id);
 
     if (overlay) {
       const canClose = await awaitIfPromise<boolean>(
