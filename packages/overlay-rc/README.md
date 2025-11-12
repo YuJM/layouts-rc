@@ -2,22 +2,24 @@
 
 English | [한국어](./README.ko.md)
 
+[![React](https://img.shields.io/badge/React-18%2B%20%7C%2019%2B-61dafb?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Inspired by [angular cdk overlay](https://material.angular.io/cdk/overlay/overview)
 
-> React overlay component manager
+> React overlay component manager with hook-based API
 
-> **⚠️ Requirements**: React 18.0.0 or higher (uses `useSyncExternalStore`)
+## Features
 
-## Feature
-
-- (alert-dialog, dialog, sheet...) open, close state **no more management**.
-- **You don't need to worry about declaring overlay component**. It's okay to have multiple overlays.
-- Delivering data to overlay component props.
-- Detect when an overlay component is closed; the resulting data is received on close.
-- **Prevent closing with beforeClose logic.** **Asynchronous result handling with await.**
-- **Simplified API with automatic ID management.**
-- **No unnecessary renders when opening or closing overlay components.**
-- **React 19 support**
+- 🎯 **Hook-based API** - Access overlay data via `useOverlay()` hook (v1.0.0+)
+- 🔄 **No state management** - Open/close state handled automatically
+- 🆔 **SSR-safe IDs** - Automatic unique ID generation
+- 📦 **Multiple overlays** - Support multiple overlays without conflicts
+- 🎁 **Type-safe data** - Pass typed data to overlay components
+- ✅ **Close prevention** - `beforeClose` logic with async support
+- 🚫 **Optimized rendering** - No unnecessary re-renders
+- ⚛️ **React 18+ & 19** - Full support for modern React versions
 
 ## Install
 
@@ -83,32 +85,34 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
 ### Create overlay component
 
-```typescript jsx
-import type {OverlayContentProps} from 'overlay-manager-rc';
-import {useBeforeClose} from 'overlay-manager-rc'; // Import useBeforeClose
+**v1.0.0+** uses hook-based API with `useOverlay()`:
 
-export function TestContent({
-  open,
-  data,
-  close,
-  id // add id prop
-}: OverlayContentProps<string>) {
+```typescript jsx
+import { useOverlay } from 'overlay-manager-rc';
+
+export function TestContent() {
+  // Access overlay context via hook
+  const { overlayId, isOpen, overlayData, closeOverlay } = useOverlay<string>();
 
   return (
     <AlertDialog
       onOpenChange={(v) => {
-        !v && close();
+        !v && closeOverlay();
       }}
-      open={open}
+      open={isOpen}
     >
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Alert title</AlertDialogTitle>
-          <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
+          <AlertDialogDescription>
+            Get Data: {overlayData}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={() => closeOverlay('confirmed')}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -198,48 +202,68 @@ export function AlertSection() {
 
 ### useOverlayManager
 
-**returns**
+Returns an object with overlay management functions.
 
-| name | description | parameter |
+| Name | Description | Parameter |
 | --- | --- | --- |
-| openOverlay | Opens an overlay component. Returns a Promise. | OverlayOptions |
+| openOverlay | Opens an overlay component. Returns a Promise that resolves with the close result. | OverlayOptions |
+| closeOverlay | Closes an overlay component by ID. | id: string |
 | closeAllOverlays | Closes all overlay components. | - |
-| closeOverlayById | Closes an overlay component by ID. | id: string |
+| overlays | Array of all current overlay states. | - |
 
 #### OverlayOptions<TData, TResult>
 
 | Prop | Type | Default | Required |
 | --- | --- | --- | --- |
-| id | string | - | No |
-| content | OverlayContent<TData, TResult> | - | Yes |
+| id | string | Auto-generated | No |
+| content | ComponentType (React Component) | - | Yes |
 | data | TData | - | No |
 | onClose | (result?: TResult) => void \| Promise<void> | - | No |
 | onOpen | (id: string) => void \| Promise<void> | - | No |
 | beforeClose | () => boolean \| Promise<boolean> | - | No |
 
-#### OverlayContentProps<TData, TResult>
+### useOverlay<TData>()
 
-| Prop | Type | Default | Required |
-| --- | --- | --- | --- |
-| data | TData | - | Yes |
-| close | (result?: TResult) => void | - | Yes |
-| open | boolean | - | Yes |
-| id | string | - | Yes |
+Hook for accessing overlay context inside overlay components. **Must be used within an overlay component rendered by OverlayContainer.**
 
-#### useBeforeClose
+**Returns:**
 
-When the manager tries to run an overlay with the same id
-function that executes before closing the overlay
+| Property | Type | Description |
+| --- | --- | --- |
+| overlayId | string | Unique ID of the overlay |
+| isOpen | boolean | Whether the overlay is currently open |
+| overlayData | TData | Data passed to the overlay via `openOverlay()` |
+| closeOverlay | (result?: TResult) => void | Function to close the overlay with optional result |
 
+### useBeforeClose
+
+Hook that executes logic before closing the overlay. Used to prevent closing based on conditions (e.g., unsaved changes).
+
+**Usage:**
 
 ```typescript jsx
-import { useBeforeClose } from 'overlay-manager-rc/useBeforeClose';
+import { useOverlay, useBeforeClose } from 'overlay-manager-rc';
 
-// ... inside your overlay component
-useBeforeClose(async () => {
-  // Your logic to determine whether to prevent closing.
-  // For example, check if a form is dirty.
-  const canClose = window.confirm('Are you sure you want to close?');
-  return canClose; // Return true to allow closing, false to prevent it.
-}, id); // Pass the overlay's ID
+export function FormOverlay() {
+  const { overlayId, overlayData, closeOverlay } = useOverlay();
+  const [isDirty, setIsDirty] = useState(false);
+
+  useBeforeClose(async () => {
+    if (isDirty) {
+      const canClose = window.confirm('You have unsaved changes. Are you sure?');
+      return canClose; // true = allow close, false = prevent close
+    }
+    return true;
+  }, overlayId);
+
+  // ... rest of component
+}
 ```
+
+## Migration Guide
+
+Upgrading from v0.9.x? See the [**Migration Guide**](./docs/MIGRATION.md) for detailed instructions on migrating to v1.0.0.
+
+## License
+
+MIT

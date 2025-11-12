@@ -2,22 +2,24 @@
 
 [English](./README.md) | 한국어
 
+[![React](https://img.shields.io/badge/React-18%2B%20%7C%2019%2B-61dafb?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 [angular cdk overlay](https://material.angular.io/cdk/overlay/overview)에서 영감을 받았습니다.
 
-> React 오버레이 컴포넌트 관리자
-
-> **⚠️ 요구사항**: React 18.0.0 이상 (`useSyncExternalStore` 사용)
+> Hook 기반 API를 제공하는 React 오버레이 컴포넌트 관리자
 
 ## 특징
 
-- (alert-dialog, dialog, sheet 등) 열기, 닫기 상태 **더 이상 관리할 필요 없음**.
-- **오버레이 컴포넌트 선언에 대해 걱정할 필요가 없습니다**. 여러 개의 오버레이가 있어도 괜찮습니다.
-- 오버레이 컴포넌트 props로 데이터 전달.
-- 오버레이 컴포넌트가 닫힐 때 감지; 닫힐 때 결과 데이터를 받습니다.
-- **beforeClose 로직으로 닫기 방지.** **await를 통한 비동기 결과 처리.**
-- **자동 ID 관리로 단순화된 API.**
-- **오버레이 컴포넌트 열기 또는 닫을 때 불필요한 렌더링 없음.**
-- **React 19 지원**
+- 🎯 **Hook 기반 API** - `useOverlay()` hook으로 오버레이 데이터 접근 (v1.0.0+)
+- 🔄 **상태 관리 불필요** - 열기/닫기 상태 자동 관리
+- 🆔 **SSR 안전한 ID** - 고유 ID 자동 생성
+- 📦 **다중 오버레이** - 충돌 없이 여러 오버레이 지원
+- 🎁 **타입 안전 데이터** - 타입이 지정된 데이터를 오버레이에 전달
+- ✅ **닫기 방지** - 비동기 지원 `beforeClose` 로직
+- 🚫 **렌더링 최적화** - 불필요한 재렌더링 방지
+- ⚛️ **React 18+ & 19** - 최신 React 버전 완벽 지원
 
 ## 설치
 
@@ -83,32 +85,34 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
 ### 오버레이 컴포넌트 생성
 
-```typescript jsx
-import type {OverlayContentProps} from 'overlay-manager-rc';
-import {useBeforeClose} from 'overlay-manager-rc'; // useBeforeClose 임포트
+**v1.0.0+**는 `useOverlay()` hook 기반 API를 사용합니다:
 
-export function TestContent({
-  open,
-  data,
-  close,
-  id // id prop 추가
-}: OverlayContentProps<string>) {
+```typescript jsx
+import { useOverlay } from 'overlay-manager-rc';
+
+export function TestContent() {
+  // Hook을 통해 오버레이 컨텍스트 접근
+  const { overlayId, isOpen, overlayData, closeOverlay } = useOverlay<string>();
 
   return (
     <AlertDialog
       onOpenChange={(v) => {
-        !v && close();
+        !v && closeOverlay();
       }}
-      open={open}
+      open={isOpen}
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Alert title</AlertDialogTitle>
-          <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
+          <AlertDialogTitle>Alert 제목</AlertDialogTitle>
+          <AlertDialogDescription>
+            받은 데이터: {overlayData}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          <AlertDialogCancel>취소</AlertDialogCancel>
+          <AlertDialogAction onClick={() => closeOverlay('confirmed')}>
+            계속
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -198,46 +202,67 @@ export function AlertSection() {
 
 ### useOverlayManager
 
-**반환값**
+오버레이 관리 함수들을 포함한 객체를 반환합니다.
 
 | 이름 | 설명 | 매개변수 |
 | --- | --- | --- |
-| openOverlay | 오버레이 컴포넌트를 엽니다. Promise를 반환합니다. | OverlayOptions |
+| openOverlay | 오버레이 컴포넌트를 엽니다. 닫기 결과로 resolve되는 Promise를 반환합니다. | OverlayOptions |
+| closeOverlay | ID로 오버레이 컴포넌트를 닫습니다. | id: string |
 | closeAllOverlays | 모든 오버레이 컴포넌트를 닫습니다. | - |
-| closeOverlayById | ID로 오버레이 컴포넌트를 닫습니다. | id: string |
+| overlays | 모든 현재 오버레이 상태의 배열. | - |
 
 #### OverlayOptions<TData, TResult>
 
-| Prop | 타입 | 기본값 | 필수 여부 |
+| Prop | 타입 | 기본값 | 필수 |
 | --- | --- | --- | --- |
-| id | string | - | 아니오 |
-| content | OverlayContent<TData, TResult> | - | 예 |
+| id | string | 자동 생성 | 아니오 |
+| content | ComponentType (React 컴포넌트) | - | 예 |
 | data | TData | - | 아니오 |
 | onClose | (result?: TResult) => void \| Promise<void> | - | 아니오 |
 | onOpen | (id: string) => void \| Promise<void> | - | 아니오 |
 | beforeClose | () => boolean \| Promise<boolean> | - | 아니오 |
 
-#### OverlayContentProps<TData, TResult>
+### useOverlay<TData>()
 
-| Prop | 타입 | 기본값 | 필수 여부 |
-| --- | --- | --- | --- |
-| data | TData | - | 예 |
-| close | (result?: TResult) => void | - | 예 |
-| open | boolean | - | 예 |
-| id | string | - | 예 |
+오버레이 컴포넌트 내부에서 오버레이 컨텍스트에 접근하는 Hook입니다. **OverlayContainer에 의해 렌더링된 오버레이 컴포넌트 내에서만 사용해야 합니다.**
 
-#### useBeforeClose
+**반환값:**
 
-매니저가 동일한 id를 가진 오버레이를 실행하려고 할 때
-오버레이를 닫기 전에 실행되는 함수
+| 속성 | 타입 | 설명 |
+| --- | --- | --- |
+| overlayId | string | 오버레이의 고유 ID |
+| isOpen | boolean | 오버레이가 현재 열려있는지 여부 |
+| overlayData | TData | `openOverlay()`를 통해 오버레이에 전달된 데이터 |
+| closeOverlay | (result?: TResult) => void | 선택적 결과와 함께 오버레이를 닫는 함수 |
+
+### useBeforeClose
+
+오버레이를 닫기 전에 로직을 실행하는 Hook입니다. 조건에 따라 닫기를 방지하는데 사용됩니다 (예: 저장되지 않은 변경사항).
+
+**사용법:**
 
 ```typescript jsx
-import { useBeforeClose } from 'overlay-manager-rc/useBeforeClose';
+import { useOverlay, useBeforeClose } from 'overlay-manager-rc';
 
-// ... 오버레이 컴포넌트 내부에서
-useBeforeClose(async () => {
-  // 닫기를 방지할지 결정하는 로직.
-  // 예를 들어, 폼이 더티 상태인지 확인.
-  const canClose = window.confirm('정말로 닫으시겠습니까?');
-  return canClose; // true를 반환하면 닫기 허용, false를 반환하면 방지
-}, id); // 오버레이의 ID 전달
+export function FormOverlay() {
+  const { overlayId, overlayData, closeOverlay } = useOverlay();
+  const [isDirty, setIsDirty] = useState(false);
+
+  useBeforeClose(async () => {
+    if (isDirty) {
+      const canClose = window.confirm('저장되지 않은 변경사항이 있습니다. 정말 닫으시겠습니까?');
+      return canClose; // true = 닫기 허용, false = 닫기 방지
+    }
+    return true;
+  }, overlayId);
+
+  // ... 나머지 컴포넌트
+}
+```
+## 마이그레이션 가이드
+
+v0.9.x에서 업그레이드하시나요? v1.0.0으로 마이그레이션하는 자세한 방법은 [**마이그레이션 가이드**](./docs/MIGRATION.ko.md)를 참조하세요.
+
+## 라이선스
+
+MIT
