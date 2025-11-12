@@ -1,4 +1,4 @@
-import type { OverlayContentProps } from 'overlay-manager-rc';
+import { useOverlay } from 'overlay-manager-rc';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,22 +10,20 @@ import {
   AlertDialogTitle,
 } from '@components/ui/alert-dialog.tsx';
 
-export function TestContent({
-  open,
-  data,
-  close,
-}: OverlayContentProps<string, boolean>) {
+export function TestContent() {
+  const { isOpen, overlayData, closeOverlay } = useOverlay<string>();
+
   return (
     <AlertDialog
       onOpenChange={(v) => {
-        !v && close(true);
+        !v && closeOverlay(true);
       }}
-      open={open}
+      open={isOpen}
     >
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Alert title</AlertDialogTitle>
-          <AlertDialogDescription>Get Data: {data}</AlertDialogDescription>
+          <AlertDialogDescription>Get Data: {overlayData}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
