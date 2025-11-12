@@ -1,35 +1,27 @@
 import { useEffect } from 'react';
-import { useOverlayManager } from './use-overlay-manager.tsx';
+import { useOverlayManager } from './use-overlay-manager';
 import { overlayStore } from './overlay-store';
+import { OverlayProvider } from './overlay-context';
 
-const CLEANUP_INTERVAL = 30000; // 30초
-const CLEANUP_THRESHOLD = 10000; // 10초
+const CLEANUP_INTERVAL = 5000; // 5초
+const CLEANUP_THRESHOLD = 1000; // 1초
 
-export function OverlayContainer({ debug = false }: { debug?: boolean }) {
+export function OverlayContainer() {
   const { overlays } = useOverlayManager();
 
   useEffect(() => {
     const cleanupOverlays = () => {
       const currentOverlays = overlayStore.getOverlays();
-      const beforeCount = currentOverlays.length;
       const currentTime = Date.now();
 
       const filteredOverlays = currentOverlays.filter((overlay) => {
-        if (overlay.open || !overlay.closeTimestamp) {
+        if (overlay.isOpen || !overlay.closeTimestamp) {
           return true;
         }
         return currentTime - overlay.closeTimestamp < CLEANUP_THRESHOLD;
       });
 
       overlayStore.setOverlays(filteredOverlays);
-
-      const afterCount = filteredOverlays.length;
-      if (debug) {
-        console.log(
-          `Overlay cleanup: ${beforeCount - afterCount} overlays removed. ` +
-            `(${afterCount} remaining)`,
-        );
-      }
     };
 
     const cleanupInterval = setInterval(cleanupOverlays, CLEANUP_INTERVAL);
@@ -37,19 +29,26 @@ export function OverlayContainer({ debug = false }: { debug?: boolean }) {
     return () => {
       clearInterval(cleanupInterval);
     };
-  }, [debug]);
+  }, []);
 
   return (
     <>
-      {overlays.map((overlay) => (
-        <overlay.content
-          close={(result) => overlay.onClose?.(result)}
-          data={overlay.data}
-          id={overlay.id}
-          key={overlay.id}
-          open={overlay.open}
-        />
-      ))}
+      {overlays.map((overlay) => {
+        // 각 overlay마다 고유한 context value 생성
+        const contextValue = {
+          overlayId: overlay.id,
+          isOpen: overlay.isOpen,
+          overlayData: overlay.data,
+          closeOverlay: (result?: unknown) => overlay.onClose?.(result),
+        };
+
+        return (
+          // 각 Content를 독립적인 Provider로 감쌈
+          <OverlayProvider key={overlay.id} value={contextValue}>
+            <overlay.content key={overlay.id} />
+          </OverlayProvider>
+        );
+      })}
     </>
   );
 }

@@ -4,8 +4,8 @@ import { overlayStore } from './overlay-store';
 /**
  * When the manager tries to run an overlay with the same id
  * Function that executes before closing the overlay
- * @param beforeClose
- * @param id
+ * @param beforeClose - Function to execute before closing overlay
+ * @param id - Overlay identifier
  */
 export const useBeforeClose = (
   beforeClose: () => Promise<boolean> | boolean,
@@ -28,11 +28,11 @@ export const useBeforeClose = (
       if (!id) return;
 
       // 해당 id를 가진 Overlay의 beforeClose를 제거
-      const currentOverlays = overlayStore.getOverlays();
-      const updatedOverlays = currentOverlays.map((o) =>
+      const cleanupOverlays = overlayStore.getOverlays();
+      const cleanupUpdated = cleanupOverlays.map((o) =>
         o.id === id ? { ...o, beforeClose: undefined } : o,
       );
-      overlayStore.setOverlays(updatedOverlays);
+      overlayStore.setOverlays(cleanupUpdated);
     };
   }, [beforeClose, id]);
 };

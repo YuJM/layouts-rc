@@ -1,13 +1,10 @@
-export * from './use-overlay-manager.tsx';
+export * from './use-overlay-manager';
 
 export type {
-  OverlayContentProps,
-  OverlayContent,
   OverlayData,
-  OverlayId,
-  OverlayKind,
   OverlayOptions,
-  OverlayPosition,
-} from './types.ts';
-export { OverlayContainer } from './overlay-container.tsx';
-export { useBeforeClose } from './use-before-close.tsx';
+} from './types';
+export { OverlayContainer } from './overlay-container';
+export { useBeforeClose } from './use-before-close';
+export { useOverlay } from './overlay-context';
+export type { OverlayContextValue } from './overlay-context';

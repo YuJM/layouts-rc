@@ -1,24 +1,35 @@
 {
   "name": "overlay-manager-rc",
-  "version": "0.10.0",
-  "description": "React overlay component manager",
+  "version": "1.0.0",
+  "description": "React overlay component manager with hook-based API",
   "keywords": [
     "front-end",
     "react",
+    "react18",
     "react19",
     "nextjs",
+    "hooks",
     "layout",
     "overlay",
     "dialog",
     "alert",
     "sheet",
+    "modal",
     "management",
     "radix-ui",
     "shadcn-ui",
-    "headless"
+    "headless",
+    "typescript"
   ],
-  "homepage": "https://layouts-rc-web.vercel.app/overlay",
-  "repository": "https://github.com/YuJM/layouts-rc/tree/main",
+  "homepage": "https://github.com/YuJM/layouts-rc/tree/main/packages/overlay-rc#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YuJM/layouts-rc.git",
+    "directory": "packages/overlay-rc"
+  },
+  "bugs": {
+    "url": "https://github.com/YuJM/layouts-rc/issues"
+  },
   "license": "MIT",
   "author": "Yujm",
   "type": "module",
@@ -45,20 +56,28 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "npm:publish": "pnpm build && npm publish",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "prettier": "@vercel/style-guide/prettier",
-  "dependencies": {
-    "nanoid": "^5.0.9"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@vercel/style-guide": "^6.0.0",
+    "@vitest/ui": "^4.0.8",
+    "happy-dom": "^20.0.10",
+    "jsdom": "^24.1.0",
     "tsup": "^8.1.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^4.0.8"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

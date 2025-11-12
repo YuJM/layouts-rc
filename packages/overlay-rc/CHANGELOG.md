@@ -1,108 +1,75 @@
 # overlay-manager-rc
 
+## 1.0.0
+
+### Major Changes
+
+- **BREAKING**: Migrated from props-based to hook-based API
+  - Replace `OverlayContentProps` with `useOverlay()` hook
+  - Property names changed: `open` → `isOpen`, `data` → `overlayData`, `close` → `closeOverlay`, `id` → `overlayId`
+  - ID generation changed from nanoid to React `useId` (format: `:R19utj6:-overlay-0`)
+  - See [Migration Guide](./docs/MIGRATION.md) for details
+
+### Benefits
+
+- 🎯 Cleaner, more React-idiomatic API
+- 🔄 Better TypeScript type inference
+- 📦 Smaller bundle size
+- ⚛️ Follows modern React patterns with hooks
+
+### Migration
+
+**Before (v0.9.x):**
+```tsx
+import type { OverlayContentProps } from 'overlay-manager-rc';
+
+export function MyOverlay({ open, data, close }: OverlayContentProps<string>) {
+  return <Dialog open={open}>{data}</Dialog>;
+}
+```
+
+**After (v1.0.0):**
+```tsx
+import { useOverlay } from 'overlay-manager-rc';
+
+export function MyOverlay() {
+  const { isOpen, overlayData, closeOverlay } = useOverlay<string>();
+  return <Dialog open={isOpen}>{overlayData}</Dialog>;
+}
+```
+
 ## 0.10.0
 
 ### Minor Changes
 
-- **BREAKING INTERNAL CHANGE**: Migrated from `@preact/signals-react` to React's native `useSyncExternalStore`
-  - ✅ Zero breaking changes for users - all APIs remain identical
-  - ✅ Bundle size reduced by 28% (3.1 KB smaller)
-  - ✅ Removed external dependency on `@preact/signals-react`
-  - ✅ Better React 18+ compatibility with official Concurrent Features
-  - ✅ Improved type safety with React's built-in types
-  - ✅ SSR support with `getServerSnapshot`
-
-### Implementation Details
-
-- Added new `overlay-store.ts` for state management
-- Refactored `use-overlay-manager.tsx` to use `useSyncExternalStore`
-- Updated `overlay-container.tsx` to remove `useSignals()`
-- Updated `use-before-close.tsx` to use new store
-- Removed `@preact/signals-react` dependency from package.json
-- Updated tsconfig.json to remove signals types
-
-### Migration Guide
-
-No migration needed! Simply update the package:
-
-```bash
-pnpm update overlay-manager-rc
-# or
-npm update overlay-manager-rc
-# or
-yarn upgrade overlay-manager-rc
-```
-
-All existing code will work without any changes.
+- Migrated from `@preact/signals-react` to React's `useSyncExternalStore`
+- Bundle size reduced by 28%
+- Better React 18+ compatibility
+- No breaking changes for users
 
 ## 0.9.1
 
-### Patch Changes
-
-- adjust time and fix
+- Adjust cleanup timing and fixes
 
 ## 0.9.0
 
-### Minor Changes
+- Add auto cleanup for closed overlays
 
-- add auto cleanup for closed overlays after 30 seconds
+## 0.8.x
 
-## 0.8.4
+- Documentation improvements
+- Korean documentation added
 
-### Patch Changes
+## 0.7.x - 0.8.0
 
-- fix document
-
-## 0.8.3
-
-### Patch Changes
-
-- fix and update document
-
-## 0.8.2
-
-### Patch Changes
-
-- add ko document
-
-## 0.8.1
-
-### Patch Changes
-
-- little fix
-
-## 0.8.0
-
-### Minor Changes
-
-- fix and react 19 available
-
-## 0.7.5
-
-### Patch Changes
-
-- fix package.json
-
-## 0.7.1
-
-### Patch Changes
-
-- fix: onClose bugFix
-
-## 0.7.0
-
-### Minor Changes
-
-- update(overlay): id 기능 추가
+- React 19 support
+- Custom ID feature
+- Bug fixes
 
 ## 0.6.0
 
-### Minor Changes
-
-- refactor render optimization
+- Render optimization
 
 ## 0.5.0
 
-### Minor Changes
-
-- update document and file fix
+- Initial stable release
