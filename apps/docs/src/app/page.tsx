@@ -18,7 +18,7 @@ function Gradient({
   );
 }
 
-const LINKS = [
+const _LINKS = [
   {
     title: "Docs",
     href: "https://turbo.build/repo/docs",
