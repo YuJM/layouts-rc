@@ -1,6 +1,6 @@
 {
   "name": "overlay-manager-rc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React overlay component manager with hook-based API",
   "keywords": [
     "front-end",
