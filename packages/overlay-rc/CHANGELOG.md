@@ -1,5 +1,11 @@
 # overlay-manager-rc
 
+## 1.0.2
+
+### Patch Changes
+
+- update document
+
 ## 1.0.0
 
 ### Major Changes
@@ -20,6 +26,7 @@
 ### Migration
 
 **Before (v0.9.x):**
+
 ```tsx
 import type { OverlayContentProps } from 'overlay-manager-rc';
 
@@ -29,6 +36,7 @@ export function MyOverlay({ open, data, close }: OverlayContentProps<string>) {
 ```
 
 **After (v1.0.0):**
+
 ```tsx
 import { useOverlay } from 'overlay-manager-rc';
 

@@ -25,10 +25,10 @@ export function SequentialContent() {
     const totalSteps = overlayData?.totalSteps ?? 3;
 
     if (currentStep < totalSteps) {
-      // 다음 dialog를 중복으로 열기 (현재 dialog는 닫지 않음)
+      // Open next dialog (keep current dialog open - stacked)
       openSequential(currentStep + 1, totalSteps);
     } else {
-      // 마지막 dialog면 닫기
+      // Close on last dialog
       closeOverlay('finish');
     }
   };

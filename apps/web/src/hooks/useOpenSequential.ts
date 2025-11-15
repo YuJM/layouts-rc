@@ -16,7 +16,7 @@ export function useOpenSequential() {
       data: {
         step,
         totalSteps,
-        message: `이것은 ${step}번째 Dialog입니다.`,
+        message: `This is dialog ${step} of ${totalSteps}.`,
       } as SequentialData,
     });
   };

@@ -25,17 +25,17 @@ export function OverlaySection() {
   return (
     <section className="md:h-screen">
       <div className="flex flex-col gap-10">
-        {/* 단일 Alert */}
+        {/* Single Alert */}
         <div className="flex flex-col gap-2">
-          <h3 className="text-lg font-semibold">단일 Alert</h3>
+          <h3 className="text-lg font-semibold">Single Alert</h3>
           <Button onClick={() => { handleOpenAlert(); }}>
-            show alert
+            Show Alert
           </Button>
         </div>
 
-        {/* 순차적으로 열기 */}
+        {/* Sequential Dialog Chain */}
         <div className="flex flex-col gap-2">
-          <h3 className="text-lg font-semibold">순차적으로 열기 (Dialog Chain)</h3>
+          <h3 className="text-lg font-semibold">Sequential Dialog Chain</h3>
           <Button onClick={() => openSequential(1, 3)}>
             Open Dialog Chain (1→2→3)
           </Button>
