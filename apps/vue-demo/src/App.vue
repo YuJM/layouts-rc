@@ -1,17 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
-import { useOverlayManager } from 'overlay-manager-vue'
-import ExampleOverlay from '@/components/ExampleOverlay.vue'
-
-const { overlays, overlayOpen } = useOverlayManager()
-
-const openOverlay = () => {
-  overlayOpen({
-    content: ExampleOverlay,
-    data: { message: 'This is an overlay by overlay manager' }
-  })
-}
+import { OverlayHost } from 'overlay-manager-vue'
 </script>
 
 <template>
@@ -24,21 +14,14 @@ const openOverlay = () => {
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
-        <button @click="openOverlay">Open Overlay</button>
       </nav>
     </div>
   </header>
 
   <RouterView />
 
-  <component
-    v-for="overlay in overlays"
-    :key="overlay.id"
-    :is="overlay.content"
-    :open="overlay.state"
-    :data="overlay.data"
-    :close="overlay.close"
-  />
+  <!-- OverlayHost renders all overlays -->
+  <OverlayHost />
 </template>
 
 <style scoped>
