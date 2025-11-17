@@ -1,6 +1,6 @@
 {
   "name": "overlay-manager-rc",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Lightweight (2KB) React overlay manager with zero dependencies, hook-based API",
   "keywords": [
     "react",
