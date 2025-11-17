@@ -386,12 +386,12 @@ import { useOverlay } from 'overlay-manager-rc';
 
 export function DemoAlertDialog() {
   // Hook을 통해 오버레이 컨텍스트 접근
-  const { overlayId, isOpen, overlayData, closeOverlay } = useOverlay<string>();
+  const { overlayId, isOpen, overlayData, closeOverlay, dismiss } = useOverlay<string>();
 
   return (
     <AlertDialog
       onOpenChange={(v) => {
-        !v && closeOverlay();
+        !v && dismiss(); // 또는 closeOverlay() - 둘 다 동일하게 작동
       }}
       open={isOpen}
     >
@@ -403,7 +403,7 @@ export function DemoAlertDialog() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
+          <AlertDialogCancel onClick={dismiss}>취소</AlertDialogCancel>
           <AlertDialogAction onClick={() => closeOverlay('confirmed')}>
             계속
           </AlertDialogAction>
@@ -528,6 +528,7 @@ export function AlertSection() {
 | isOpen | boolean | 오버레이가 현재 열려있는지 여부 |
 | overlayData | TData | `openOverlay()`를 통해 오버레이에 전달된 데이터 |
 | closeOverlay | (result?: TResult) => void | 선택적 결과와 함께 오버레이를 닫는 함수 |
+| dismiss | () => void | 결과값 없이 오버레이를 닫는(취소) 함수. `closeOverlay()`와 동일 |
 
 ### useBeforeClose
 

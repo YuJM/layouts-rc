@@ -40,6 +40,7 @@ export function OverlayContainer() {
           isOpen: overlay.isOpen,
           overlayData: overlay.data,
           closeOverlay: (result?: unknown) => overlay.onClose?.(result),
+          dismiss: () => overlay.onClose?.(undefined),
         };
 
         return (

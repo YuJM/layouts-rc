@@ -386,12 +386,12 @@ import { useOverlay } from 'overlay-manager-rc';
 
 export function DemoAlertDialog() {
   // Access overlay context via hook
-  const { overlayId, isOpen, overlayData, closeOverlay } = useOverlay<string>();
+  const { overlayId, isOpen, overlayData, closeOverlay, dismiss } = useOverlay<string>();
 
   return (
     <AlertDialog
       onOpenChange={(v) => {
-        !v && closeOverlay();
+        !v && dismiss(); // Or use closeOverlay() - both work the same
       }}
       open={isOpen}
     >
@@ -403,7 +403,7 @@ export function DemoAlertDialog() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={dismiss}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={() => closeOverlay('confirmed')}>
             Continue
           </AlertDialogAction>
@@ -528,6 +528,7 @@ Hook for accessing overlay context inside overlay components. **Must be used wit
 | isOpen | boolean | Whether the overlay is currently open |
 | overlayData | TData | Data passed to the overlay via `openOverlay()` |
 | closeOverlay | (result?: TResult) => void | Function to close the overlay with optional result |
+| dismiss | () => void | Function to dismiss (cancel) the overlay without returning a result. Same as `closeOverlay()` |
 
 ### useBeforeClose
 

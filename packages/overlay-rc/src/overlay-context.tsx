@@ -12,6 +12,8 @@ export interface OverlayContextValue<TData = unknown, TResult = unknown> {
   overlayData: TData;
   /** Function to close this overlay with optional result */
   closeOverlay: (result?: TResult) => void;
+  /** Function to dismiss (cancel) this overlay without returning a result */
+  dismiss: () => void;
 }
 
 /**

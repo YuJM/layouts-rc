@@ -8,11 +8,13 @@ describe('useOverlay', () => {
     it('should return overlay context value', async () => {
       const user = userEvent.setup();
       const mockCloseOverlay = vi.fn();
+      const mockDismiss = vi.fn();
       const contextValue = {
         overlayId: 'test-overlay',
         isOpen: true,
         overlayData: 'test data',
         closeOverlay: mockCloseOverlay,
+        dismiss: mockDismiss,
       };
 
       function TestComponent() {
@@ -45,6 +47,40 @@ describe('useOverlay', () => {
       });
     });
 
+    it('should work with dismiss function', async () => {
+      const user = userEvent.setup();
+      const mockDismiss = vi.fn();
+      const contextValue = {
+        overlayId: 'dismiss-overlay',
+        isOpen: true,
+        overlayData: 'test data',
+        closeOverlay: vi.fn(),
+        dismiss: mockDismiss,
+      };
+
+      function TestComponent() {
+        const overlay = useOverlay<string>();
+
+        return (
+          <div>
+            <button onClick={() => overlay.dismiss()}>Dismiss</button>
+          </div>
+        );
+      }
+
+      render(
+        <OverlayProvider value={contextValue}>
+          <TestComponent />
+        </OverlayProvider>
+      );
+
+      await user.click(screen.getByText('Dismiss'));
+
+      await waitFor(() => {
+        expect(mockDismiss).toHaveBeenCalled();
+      });
+    });
+
     it('should work with typed data', () => {
       interface CustomData {
         message: string;
@@ -56,6 +92,7 @@ describe('useOverlay', () => {
         isOpen: true,
         overlayData: { message: 'Hello', count: 42 },
         closeOverlay: vi.fn(),
+        dismiss: vi.fn(),
       };
 
       function TypedComponent() {
@@ -87,6 +124,7 @@ describe('useOverlay', () => {
         isOpen: true,
         overlayData: 'nested data',
         closeOverlay: mockCloseOverlay,
+        dismiss: vi.fn(),
       };
 
       function ParentComponent() {
@@ -161,6 +199,7 @@ describe('useOverlay', () => {
         isOpen: true,
         overlayData: 'data 1',
         closeOverlay: mockCloseOverlay1,
+        dismiss: vi.fn(),
       };
 
       const contextValue2 = {
@@ -168,6 +207,7 @@ describe('useOverlay', () => {
         isOpen: true,
         overlayData: 'data 2',
         closeOverlay: mockCloseOverlay2,
+        dismiss: vi.fn(),
       };
 
       function TestComponent() {
@@ -218,6 +258,7 @@ describe('useOverlay', () => {
         isOpen: true,
         overlayData: 'debug data',
         closeOverlay: vi.fn(),
+        dismiss: vi.fn(),
       };
 
       function DebugComponent() {
